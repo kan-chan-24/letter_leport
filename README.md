@@ -295,6 +295,11 @@ SNSとは違い、通知で定期的な近況報告を促しつつも、この�
 |Ruby |言語|
 |Docker|開発環境構築|
 |Device|新規登録/ログイン・ログアウト|
+|WebPush|push通知|
+|ActionMailer|メール通知|
+|Rspec|テストフレームワーク|
+|Rubocop|文法チェック|
+|FactoryBot|テストデータ生成|
 
 - フロントエンド
 |技術|用途|

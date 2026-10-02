@@ -365,6 +365,6 @@ https://www.figma.com/design/NjtIVwNzZMze1SgjGaOe1Y/letter_leport-%E7%94%BB%E9%9
 
 ## 12.ER図
 
-
+https://dbdiagram.io/d/6abe5be1abcc87fb7ac5b82a
 
 ---

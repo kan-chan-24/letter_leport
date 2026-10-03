@@ -320,7 +320,7 @@ SNSとは違い、通知で定期的な近況報告を促しつつも、この�
 | --- | --- | --- |
 |Ruby on Rails/Ruby|フレームワーク|カリキュラム・個人制作で用いてきた経験があり、学習コストが低い|
 |Docker|開発環境構築|開発環境構築で利便性が高く、こちらも個人制作で用いてきたため学習コストが低い|
-|Device|新規登録/ログイン・ログアウト|新規登録/ログイン周りの実装コストを下げてくれる|
+|Devise|新規登録/ログイン・ログアウト|新規登録/ログイン周りの実装コストを下げてくれる|
 |WebPush|push通知|近況報告の促し通知やグループ内の投稿時にプッシュ通知を送るため|
 |ActionMailer|メール通知|近況報告の促しで送信するメール通知用|
 |Redis|時間がかかる処理の忘れ書き掲示板|TurboStreamとSidekiqの間に入る処理仲介役|
@@ -360,5 +360,11 @@ SNSとは違い、通知で定期的な近況報告を促しつつも、この�
 ## 11.画面遷移図
 
 https://www.figma.com/design/NjtIVwNzZMze1SgjGaOe1Y/letter_leport-%E7%94%BB%E9%9D%A2%E9%81%B7%E7%A7%BB%E5%9B%B3?node-id=0-1&t=Ai9qso5ESIxs1iSB-1
+
+---
+
+## 12.ER図
+
+https://dbdiagram.io/d/6abe5be1abcc87fb7ac5b82a
 
 ---

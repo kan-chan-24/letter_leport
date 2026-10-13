@@ -24,7 +24,9 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <%# ログイン機能の実装後に、ログイン前・後でヘッダーを切り替える %>
+    <%= render "shared/before_login_header" %>
+    <main> 
       <%= yield %>
     </main>
   </body>

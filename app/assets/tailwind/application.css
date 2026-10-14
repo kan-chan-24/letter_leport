@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* daisyUI本体のファイルをTailwindのクラス探索対象から外す */
+@source not "./daisyui{,*}.mjs";
+
+/* daisyUIを読み込む（組み込みテーマは使わない） */
+@plugin "./daisyui.mjs" {
+  themes: false;
+}
+
+/* 自作テーマ：warmhearth */
+@plugin "./daisyui-theme.mjs" {
+  name: "warmhearth";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  /* 背景・文字（100が最も明るく、300に向かって濃くなる） */
+  --color-base-100: #FFFBF9;  /* カード */
+  --color-base-200: #F7F0EC;  /* ページ背景 */
+  --color-base-300: #EDE3DE;  /* サイドバー・パネル・枠線 */
+  --color-base-content: #2D2926;
+
+  /* メインカラー */
+  --color-primary: #A8482A;
+  --color-primary-content: #FFFFFF;
+  --color-secondary: #5F7D66;
+  --color-secondary-content: #FFFFFF;
+  --color-accent: #D48B70;
+  --color-accent-content: #2D2926;
+  --color-neutral: #2D2926;
+  --color-neutral-content: #F7F0EC;
+
+  /* 状態を表す色 */
+  --color-info: #5B7C99;
+  --color-info-content: #FFFFFF;
+  --color-success: #5F7D66;
+  --color-success-content: #FFFFFF;
+  --color-warning: #D9A441;
+  --color-warning-content: #2D2926;
+  --color-error: #C62828;
+  --color-error-content: #FFFFFF;
+
+  /* 角丸・線・質感 */
+  --radius-selector: 1rem;
+  --radius-field: 0.375rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}

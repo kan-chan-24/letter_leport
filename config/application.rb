@@ -38,5 +38,15 @@ module App
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # 表示や Time.current の基準を日本時間にする
+    config.time_zone = "Tokyo"
+
+    # デフォルトの言語を日本語にする
+    config.i18n.default_locale = :ja
+    config.i18n.available_locales = [:ja, :en]
+
+    # config/locales 配下のサブディレクトリにある翻訳ファイルも読み込む
+    config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.{rb,yml}")]
   end
 end

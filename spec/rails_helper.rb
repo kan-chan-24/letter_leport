@@ -69,7 +69,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
-  
+
   # モデルやサービスのspecでもN+1を検知させる
   if Bullet.enable?
     config.before(:each) do

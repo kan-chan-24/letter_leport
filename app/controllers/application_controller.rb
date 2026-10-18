@@ -12,9 +12,9 @@ class ApplicationController < ActionController::Base
 
   # 新規登録（:sign_up）のときに、name も受け取ってOKとDeviseに伝える
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
   end
-  
+
   # 新規登録が成功するとそのままログイン状態にする
   def after_sign_in_path_for(resource)
     mypage_path

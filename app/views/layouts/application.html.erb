@@ -26,7 +26,15 @@
   <body>
     <%# ログイン機能の実装後に、ログイン前・後でヘッダーを切り替える %>
     <%= render "shared/before_login_header" %>
-    <main> 
+    <main>
+      <% if notice %>
+        <%# うまくいったとき %>
+        <div class="alert alert-success max-w-md mx-auto mt-4"><%= notice %></div>
+      <% end %>
+      <% if alert %>
+        <%# 問題があったとき %>
+        <div class="alert alert-error max-w-md mx-auto mt-4"><%= alert %></div>
+      <% end %> 
       <%= yield %>
     </main>
   </body>

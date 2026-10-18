@@ -17,13 +17,14 @@
         </div>
 
         <div class="mb-4">
-          <%= f.label :password, "パスワード", class: "label mb-1" %>
-          <% if @minimum_password_length %>
-            <span class="text-sm text-base-content/60">（<%= @minimum_password_length %>文字以上）</span>
+          <%= f.label :password, class: "label mb-1" do %>
+            パスワード
+            <% if @minimum_password_length %>
+              <span class="text-sm text-base-content/60">（<%= @minimum_password_length %>文字以上）</span>
+            <% end %>
           <% end %>
           <%= f.password_field :password, autocomplete: "new-password", class: "input w-full" %>
         </div>
-
         <div class="mb-4">
           <%= f.label :password_confirmation, "パスワード（確認用）", class: "label mb-1" %>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "input w-full" %>

@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
     it "FactoryBotのデフォルト値で有効であること" do
       expect(build(:user)).to be_valid
     end
-    
+
     # 存在テスト
     context "name" do
       it "空だと無効" do
@@ -24,7 +24,7 @@ RSpec.describe User, type: :model do
         expect(build(:user, name: "a" * 20)).to be_valid
       end
     end
-    
+
     context "email" do
       it "空だと無効" do
         user = build(:user, email: "")

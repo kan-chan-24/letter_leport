@@ -1,0 +1,11 @@
+<header class="navbar bg-base-100 shadow-sm px-4">
+  <div class="flex-1">
+    <%= link_to "letter_leport", root_path, class: "text-xl font-bold text-primary" %>
+  </div>
+  <div class="flex gap-2">
+    <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary btn-sm" %>
+    <%= link_to "ログイン", new_user_session_path, class: "btn btn-ghost btn-sm" %>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-ghost btn-sm" %>
+  </div>
+</header>
+

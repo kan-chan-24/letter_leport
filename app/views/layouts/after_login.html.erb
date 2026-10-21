@@ -23,7 +23,7 @@
     <%= javascript_importmap_tags %>
   </head>
   <body class="min-h-screen flex flex-col">
-    <%= render "shared/login_header" %>
+    <%= render "shared/after_login_header" %>
 
     <div class="drawer lg:drawer-open flex-1">
       <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
@@ -33,7 +33,7 @@
           <%= yield %>
         </main>
       </div>
-      <%= render "shared/login_sidebar" %>
+      <%= render "shared/after_login_sidebar" %>
     </div>
   </body>
 </html>

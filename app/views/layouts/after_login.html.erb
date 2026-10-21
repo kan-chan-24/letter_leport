@@ -22,25 +22,21 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+  <body class="min-h-screen flex flex-col">
+    <%= render "shared/login_header" %>
 
-  <body>
-    <div class="drawer">
+    <div class="drawer lg:drawer-open flex-1">
       <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
-        <!-- Page content here -->
-        <label for="my-drawer-1" class="btn drawer-button">Open drawer</label>
-          <%= render "shared/login_header" %>
-          <main>
-            <% if notice %>
-              <%# うまくいったとき %>
-              <div class="alert alert-success max-w-md mx-auto mt-4"><%= notice %></div>
-            <% end %>
-            <% if alert %>
-              <%# 問題があったとき %>
-              <div class="alert alert-error max-w-md mx-auto mt-4"><%= alert %></div>
-            <% end %> 
-            <%= yield %>
-          </main>
+        <main>
+          <% if notice %>
+            <div class="alert alert-success max-w-md mx-auto mt-4"><%= notice %></div>
+          <% end %>
+          <% if alert %>
+            <div class="alert alert-error max-w-md mx-auto mt-4"><%= alert %></div>
+          <% end %>
+          <%= yield %>
+        </main>
       </div>
       <%= render "shared/login_sidebar" %>
     </div>

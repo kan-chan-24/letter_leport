@@ -29,12 +29,7 @@
       <input id="my-drawer-1" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content">
         <main>
-          <% if notice %>
-            <div class="alert alert-success max-w-md mx-auto mt-4"><%= notice %></div>
-          <% end %>
-          <% if alert %>
-            <div class="alert alert-error max-w-md mx-auto mt-4"><%= alert %></div>
-          <% end %>
+          <%= render "shared/flash" %>
           <%= yield %>
         </main>
       </div>

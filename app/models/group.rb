@@ -1,4 +1,4 @@
-class Group < ApplicationRecordk
+class Group < ApplicationRecord
   has_many :group_members, dependent: :destroy
   has_many :users, through: :group_members
 
@@ -9,7 +9,7 @@ class Group < ApplicationRecordk
   validates :name, presence: true
   validates :invite_token, presence: true, uniqueness: true
   validates :interval_unit, presence: true
-  validates :interval_count, presence: true, numericity: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: :max_interval_count }
+  validates :interval_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: :max_interval_count }
   validates :notify_day_of_week, presence: true, numericality: { only_integer: true, in: 0..6 }
   validates :notify_day_of_month, presence: true, numericality: { only_integer: true, in: 1..28 }
   validates :notify_hour, presence: true, numericality: { only_integer: true, in: 0..23 }

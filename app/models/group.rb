@@ -13,7 +13,7 @@ class Group < ApplicationRecord
     three_month: { interval_unit: "month", interval_count: 3, label: "3ヶ月に1回" },
     six_month: { interval_unit: "month", interval_count: 6, label: "半年に1回" },
     one_year: { interval_unit: "month", interval_count: 12, label: "年1回" }
-  }
+  }.freeze
 
   validates :name, presence: true
   validates :invite_token, presence: true, uniqueness: true

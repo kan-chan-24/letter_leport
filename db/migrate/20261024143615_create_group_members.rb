@@ -8,6 +8,6 @@ class CreateGroupMembers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :group_members, [:group_id, :user_id], unique: true
+    add_index :group_members, [ :group_id, :user_id ], unique: true
   end
 end

@@ -4,5 +4,5 @@ Rails.application.routes.draw do
 
   get "mypage", to: "mypages#show"
 
-  resources :groups, only: [:new, :create, :show]
+  resources :groups, only: [ :new, :create, :show ]
 end

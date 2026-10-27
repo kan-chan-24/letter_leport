@@ -1,4 +1,39 @@
-<div>
-  <h1 class="font-bold text-4xl">Groups#show</h1>
-  <p>Find me in app/views/groups/show.html.erb</p>
+<div class="mx-auto w-full max-w-lg px-4 py-8">
+  <div class="mb-6 flex items-center gap-2">
+    <h1 class="text-2xl font-bold"><%= @group.name %></h1>
+    <span class="badge badge-ghost badge-sm">仮ページ</span>
+  </div>
+
+  <div class="card border border-base-300 bg-base-100 shadow-sm">
+    <div class="card-body space-y-4">
+      <div>
+        <p class="text-sm text-base-content/70">通知の頻度</p>
+        <p class="font-semibold"><%= @group.frequency_label %></p>
+      </div>
+
+      <div>
+        <p class="text-sm text-base-content/70">次回の通知</p>
+        <p class="font-semibold"><%= @group.next_notify_at.strftime("%Y年%-m月%-d日 %H:%M") %></p>
+      </div>
+
+      <div>
+        <p class="text-sm text-base-content/70">招待トークン（確認用）</p>
+        <p class="break-all font-mono text-sm"><%= @group.invite_token %></p>
+      </div>
+
+      <div>
+        <p class="mb-1 text-sm text-base-content/70">メンバー</p>
+        <ul class="space-y-1">
+          <% @group.group_members.includes(:user).each do |member| %>
+            <li class="flex items-center gap-2">
+              <span><%= member.user.name %></span>
+              <% if member.host? %>
+                <span class="badge badge-primary badge-sm">ホスト</span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>

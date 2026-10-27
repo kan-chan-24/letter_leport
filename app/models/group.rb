@@ -31,6 +31,14 @@ class Group < ApplicationRecord
   validates :notify_hour, presence: true, numericality: { only_integer: true, in: 0..23 }
   validates :next_notify_at, presence: true
 
+  # 保存済みの interval_unit・interval_count から、表示用のラベル（例: "半年に1回"）を返す
+  def frequency_label
+    preset = FREQUENCY_PRESET.values.find do |p|
+      p[:interval_unit] == interval_unit && p[:interval_count] == interval_count
+    end
+    preset&.dig(:label)
+  end
+
   private
 
   def max_interval_count

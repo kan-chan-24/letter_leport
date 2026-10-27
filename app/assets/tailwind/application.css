@@ -51,3 +51,8 @@
   --depth: 0;
   --noise: 0;
 }
+
+/* エラー時に生成されるエラーメッセージdivがレイアウトを崩さないようにしている */
+.field_with_errors {
+  display: contents;
+}

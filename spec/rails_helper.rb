@@ -40,6 +40,11 @@ RSpec.configure do |config|
     Rails.root.join('spec/fixtures')
   ]
 
+  # テスト上でログイン状態にできるようにする設定
+  config.include Devise::Test::IntegrationHelpers, type: :request
+  # テスト上で時効を固定できるようにする設定
+  config.include ActiveSupport::Testing::TimeHelpers
+
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

@@ -1,4 +1,29 @@
 <div>
-  <h1 class="font-bold text-4xl">Groups#new</h1>
-  <p>Find me in app/views/groups/new.html.erb</p>
+  <h1 class="font-bold text-4xl">Groupsを作成</h1>
+
+  <% if @group.errors.any? %>
+    <% @group.errors.full_messages.each do |message| %>
+      <p><%= message %></p>
+    <% end %>
+  <% end %>
+
+  <%= form_with model:@group do |form| %>
+    <%# グループ名の入力 %>
+    <%= form.label :name, "グループ名", class: "label" %>
+    <%= form.text_field :name, class: "input" %>
+
+    <%# 頻度の入力 %>
+    <%= form.radio_button :frequency, "one_week" %>
+    <%= form.label :frequency_one_week, "週1回" %>
+    <%= form.radio_button :frequency, "one_month" %>
+    <%= form.label :frequency_one_month, "月1回" %>
+    <%= form.radio_button :frequency, "three_month" %>
+    <%= form.label :frequency_three_month, "3ヶ月に1回" %>
+    <%= form.radio_button :frequency, "six_month" %>
+    <%= form.label :frequency_six_month, "半年に1回" %>
+    <%= form.radio_button :frequency, "one_year" %>
+    <%= form.label :frequency_one_year, "1年に1回" %>
+
+    <%= form.submit "グループを作成する" %>
+  <% end %>
 </div>

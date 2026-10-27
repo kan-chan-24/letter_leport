@@ -6,6 +6,9 @@ class Group < ApplicationRecord
 
   enum :interval_unit, { week: 0, month: 1 }
 
+  # DBには保存しない「仮想属性」。フォームから届く通知頻度を受け取るためのもの
+  attribute :frequency, :string
+
   # 通知頻度プリセット用の定数（週１〜年１まで）
   FREQUENCY_PRESET = {
     one_week: { interval_unit: "week", interval_count: 1, label: "週1回" },
@@ -15,8 +18,12 @@ class Group < ApplicationRecord
     one_year: { interval_unit: "month", interval_count: 12, label: "年1回" }
   }.freeze
 
+  # バリデーションの直前に、frequency を interval_unit などに変換する（空チェック前に値を入れておきたい）
+  before_validation :apply_frequency_preset, on: :create
+
   validates :name, presence: true
   validates :invite_token, presence: true, uniqueness: true
+  validates :frequency, inclusion: { in: FREQUENCY_PRESET.keys.map(&:to_s), message: "を選択してください" }, on: :create
   validates :interval_unit, presence: true
   validates :interval_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: :max_interval_count }
   validates :notify_day_of_week, presence: true, numericality: { only_integer: true, in: 0..6 }
@@ -28,5 +35,22 @@ class Group < ApplicationRecord
 
   def max_interval_count
     week? ? 8 : 12
+  end
+
+  # frequency（例: "six_month"）をもとに、保存用カラムの値をセットする
+  def apply_frequency_preset
+    preset = FREQUENCY_PRESET[frequency&.to_sym]
+    return if preset.nil?
+
+    self.interval_unit  = preset[:interval_unit]
+    self.interval_count = preset[:interval_count]
+
+    self.next_notify_at = NotifyAtCalculator.first_notify_at(
+      base_time: Time.current,
+      interval_unit: interval_unit,
+      notify_day_of_week: notify_day_of_week,
+      notify_day_of_month: notify_day_of_month,
+      notify_hour: notify_hour
+    )
   end
 end

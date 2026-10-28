@@ -85,9 +85,9 @@ RSpec.describe "Groups", type: :request do
         expect(response).to have_http_status(200)
       end
 
-      it "参加していないグループは404になる" do
+      it "参加していないグループは個人ページへリダイレクトされる" do
         get group_path(group)
-        expect(response).to have_http_status(404)
+        expect(response).to redirect_to(mypage_path)
       end
     end
   end

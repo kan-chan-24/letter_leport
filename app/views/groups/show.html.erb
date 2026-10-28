@@ -25,6 +25,8 @@
         <ul class="space-y-1">
           <% @group.group_members.includes(:user).each do |member| %>
             <li class="flex items-center gap-2">
+              <%# 仮アイコン（頭文字だけ） %>
+              <span><%= member.user.name.first %></span>
               <span><%= member.user.name %></span>
               <% if member.host? %>
                 <span class="badge badge-primary badge-sm">ホスト</span>
@@ -35,4 +37,6 @@
       </div>
     </div>
   </div>
+  <%= button_to "近況を知らせる", "#", method: :get, class: "btn" %>
+
 </div>

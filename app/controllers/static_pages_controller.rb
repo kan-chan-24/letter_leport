@@ -8,6 +8,6 @@ class StaticPagesController < ApplicationController
 
   # ログイン時にトップへアクセスすると個人ページへ戻される
   def redirect_if_signed_in
-    redirect_to mypage_path if user_signed_in?
+    # redirect_to mypage_path if user_signed_in?
   end
 end

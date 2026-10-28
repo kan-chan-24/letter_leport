@@ -1,6 +1,6 @@
-class GroupsController < ApplicationController
-  # ログインユーザーのみアクセス許可
-  before_action :authenticate_user!
+class GroupsController < AuthenticatedController
+  # ログインユーザーのみアクセス許可は、authenticated_controllerで済み
+  before_action :set_group, only: [ :show ]
 
   def new
     @group = Group.new
@@ -22,12 +22,17 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = current_user.groups.find(params[:id])
+    # before_actionで@groupはセット済みなので、すでに@groupが使用可能な状態
   end
 
   private
 
   def group_params
     params.require(:group).permit(:name, :frequency)
+  end
+
+  def set_group
+    @group = current_user.groups.find_by(id: params[:id])
+    redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
   end
 end

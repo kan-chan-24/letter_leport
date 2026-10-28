@@ -22,7 +22,8 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.groups.find_by(id: params[:id])
+    redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
   end
 
   private

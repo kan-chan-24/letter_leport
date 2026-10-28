@@ -1,9 +1,21 @@
+<% current_group = local_assigns[:current_group] %>
+
 <div class="drawer-side lg:!top-16 lg:!h-[calc(100vh-4rem)]">
   <label for="my-drawer-1" aria-label="Close sidebar" class="drawer-overlay"></label>
-  <ul class="menu bg-base-200 min-h-full w-80 p-4">
-    <!-- 参加グループ一覧 -->
-    <% current_user.groups.each do |group| %>
-      <li><%= group.name %></li>
-    <% end %>
-  </ul>
+
+  <div class="bg-base-200 min-h-full w-80 p-4">
+    <ul class="menu w-full p-0">
+      <li class="menu-title text-xs font-normal text-base-content/50">参加しているグループ</li>
+      <% current_user.groups.each do |group| %>
+        <% active = current_group&.id == group.id %>
+        <li>
+          <%= link_to group_path(group),
+                class: "flex items-center gap-3 py-2.5 text-base #{active ? 'menu-active !bg-base-300 !text-base-content font-bold' : ''}",
+                aria: { current: (active ? "page" : nil) } do %>
+            <span class="truncate"><%= group.name %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
 </div>

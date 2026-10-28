@@ -1,7 +1,4 @@
-class MypagesController < ApplicationController
-  before_action :authenticate_user!
-  layout "after_login"
-
+class MypagesController < AuthenticatedController
   def show
   end
 end

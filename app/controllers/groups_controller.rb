@@ -1,4 +1,4 @@
-class GroupsController < ApplicationController
+class GroupsController < AuthenticatedController
   # ログインユーザーのみアクセス許可
   before_action :authenticate_user!
   before_action :set_group, only: [:show]

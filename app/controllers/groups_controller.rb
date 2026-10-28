@@ -1,6 +1,6 @@
 class GroupsController < AuthenticatedController
   # ログインユーザーのみアクセス許可は、authenticated_controllerで済み
-  before_action :set_group, only: [:show]
+  before_action :set_group, only: [ :show ]
 
   def new
     @group = Group.new

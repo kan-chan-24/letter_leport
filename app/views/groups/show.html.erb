@@ -1,42 +1,62 @@
-<div class="mx-auto w-full max-w-lg px-4 py-8">
-  <div class="mb-6 flex items-center gap-2">
+<div class="mx-auto max-w-5xl px-4 py-8">
+  <%# ===== グループのヘッダー：グループ名（右側に招待リンク・グループ設定ボタンを後のissueで追加） ===== %>
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-4">
     <h1 class="text-2xl font-bold"><%= @group.name %></h1>
+    <%# TODO: 招待リンクのコピー・グループ設定ボタン（別issue） %>
   </div>
 
-  <div class="card border border-base-300 bg-base-100 shadow-sm">
-    <div class="card-body space-y-4">
-      <div>
-        <p class="text-sm text-base-content/70">通知の頻度</p>
-        <p class="font-semibold"><%= @group.frequency_label %></p>
-      </div>
+  <%# ===== 期間の見出し＋参加メンバー ===== %>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <%# 期間の切り替え（◀ ▶）は「期間ごとのTL表示」のissueで追加 %>
+    <h2 class="text-lg font-bold">みんなの近況</h2>
 
-      <div>
-        <p class="text-sm text-base-content/70">次回の通知</p>
-        <p class="font-semibold"><%= @group.next_notify_at.strftime("%Y年%-m月%-d日 %H:%M") %></p>
-      </div>
-
-      <div>
-        <p class="text-sm text-base-content/70">招待トークン（確認用）</p>
-        <p class="break-all font-mono text-sm"><%= @group.invite_token %></p>
-      </div>
-
-      <div>
-        <p class="mb-1 text-sm text-base-content/70">メンバー</p>
-        <ul class="space-y-1">
-          <% @group.group_members.includes(:user).each do |member| %>
-            <li class="flex items-center gap-2">
-              <%# 仮アイコン（頭文字だけ） %>
-              <span><%= member.user.name.first %></span>
-              <span><%= member.user.name %></span>
-              <% if member.host? %>
-                <span class="badge badge-primary badge-sm">ホスト</span>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-      </div>
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-base-content/70">参加メンバー</span>
+      <ul class="flex -space-x-2">
+        <% @group.group_members.includes(:user).each do |member| %>
+          <%# 仮アイコン（頭文字だけ）。写真対応時はヘルパーに置き換える %>
+          <li title="<%= member.user.name %><%= '（ホスト）' if member.host? %>"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary ring-2 ring-base-100">
+            <%= member.user.name.first %>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
-  <%= button_to "近況を知らせる", "#", method: :get, class: "btn" %>
 
+  <%# ===== 本体：左にTL、右にサイド情報（スマホでは右側の内容が上に来る） ===== %>
+  <div class="grid gap-6 lg:grid-cols-[1fr_15rem]">
+    <%# ----- TL ----- %>
+    <section class="order-2 lg:order-1">
+      <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
+      <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
+        <p class="font-semibold">まだ近況は届いていません</p>
+        <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
+      </div>
+    </section>
+
+    <%# ----- サイド情報 ----- %>
+    <aside class="order-1 space-y-4 lg:order-2">
+      <%# 遷移先は投稿機能の実装後に link_to へ置き換える %>
+      <%= tag.button "近況を書き始める", type: "button", class: "btn btn-primary btn-block", disabled: true %>
+
+      <div class="card border border-base-300 bg-base-100">
+        <div class="card-body items-center p-4 text-center">
+          <p class="text-sm text-base-content/70">現在の連絡頻度</p>
+          <p class="text-lg font-bold text-primary"><%= @group.frequency_label %></p>
+          <p class="text-xs text-base-content/60">
+            次回の通知：<%= @group.next_notify_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+          </p>
+        </div>
+      </div>
+
+      <%# 確認用。招待リンクのコピー機能ができたら削除する %>
+      <details class="collapse collapse-arrow border border-base-300 bg-base-100">
+        <summary class="collapse-title text-sm">招待トークン（確認用）</summary>
+        <div class="collapse-content">
+          <p class="break-all font-mono text-xs"><%= @group.invite_token %></p>
+        </div>
+      </details>
+    </aside>
+  </div>
 </div>

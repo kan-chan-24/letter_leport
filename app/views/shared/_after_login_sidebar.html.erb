@@ -1,9 +1,9 @@
 <div class="drawer-side lg:!top-16 lg:!h-[calc(100vh-4rem)]">
-  <label for="my-drawer-1" aria-label="close sidebar" class="drawer-overlay"></label>
+  <label for="my-drawer-1" aria-label="Close sidebar" class="drawer-overlay"></label>
   <ul class="menu bg-base-200 min-h-full w-80 p-4">
-    <!-- Sidebar content here -->
-    <li><a>Sidebar Item 1</a></li>
-    <li><a>Sidebar Item 2</a></li>
+    <!-- 参加グループ一覧 -->
+    <% current_user.groups.each do |group| %>
+      <li><%= group.name %></li>
+    <% end %>
   </ul>
 </div>
-

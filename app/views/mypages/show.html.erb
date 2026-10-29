@@ -1,4 +1,42 @@
-<div class="max-w-2xl mx-auto px-4 py-12">
-  <h1 class="text-2xl font-bold mb-4"><%= current_user.name %>さんの個人ページ（仮）</h1>
-  <p>個人ページは別のissueで作成予定です。</p>
+<div class="mx-auto max-w-5xl px-4 py-8">
+  <%# ===== グループのヘッダー：グループ名（右側に招待リンク・グループ設定ボタンを後のissueで追加） ===== %>
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-4">
+    <h1 class="text-2xl font-bold"><%= current_user.name %>の部屋</h1>
+    <%# TODO: 招待リンクのコピー・グループ設定ボタン（別issue） %>
+  </div>
+
+  <%# ===== 期間の見出し＋参加メンバー ===== %>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <%# 期間の切り替え（◀ ▶）は「期間ごとのTL表示」のissueで追加 %>
+    <h2 class="text-lg font-bold">あなたの近況</h2>
+  </div>
+
+  <%# ===== 本体：左にTL、右にサイド情報（スマホでは右側の内容が上に来る） ===== %>
+  <div class="grid gap-6 lg:grid-cols-[1fr_15rem]">
+    <%# ----- TL ----- %>
+    <section class="order-2 lg:order-1">
+      <% unless current_user.group_members.exists? %>
+         <%= link_to new_group_path, class: "group block rounded-box focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" do %>
+            <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center
+                        transition duration-200
+                        group-hover:border-primary group-hover:bg-base-200
+                        group-active:scale-[0.98] group-active:bg-base-300">
+              <p class="font-semibold transition-colors group-hover:text-primary">参加しているグループがありません</p>
+              <p class="mt-1 text-sm text-base-content/60">グループを作ってみましょう！</p>
+            </div>
+          <% end %>
+      <% end %>
+      <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
+      <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
+        <p class="font-semibold">まだ近況は届いていません</p>
+        <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
+      </div>
+    </section>
+
+    <%# ----- サイド情報 ----- %>
+    <aside class="order-1 space-y-4 lg:order-2">
+      <%# 遷移先は投稿機能の実装後に link_to へ置き換える %>
+      <%= tag.button "近況を書き始める", type: "button", class: "btn btn-primary btn-block", disabled: true %>
+    </aside>
+  </div>
 </div>

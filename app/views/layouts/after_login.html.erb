@@ -33,7 +33,7 @@
           <%= yield %>
         </main>
       </div>
-      <%= render "shared/after_login_sidebar" %>
+      <%= render "shared/after_login_sidebar", current_group: @group %>
     </div>
   </body>
 </html>

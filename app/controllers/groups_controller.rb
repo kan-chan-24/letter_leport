@@ -10,8 +10,7 @@ class GroupsController < AuthenticatedController
     @group = Group.new(group_params)
 
     # 作成者を host として仕込む（save 時にまとめて保存される）
-    @group.group_members.build(user: current_user, role: :host)
-
+    @group.group_members.build(user_id: current_user.id, role: :host)
 
     if @group.save
       redirect_to group_path(@group), notice: "グループを作成しました"

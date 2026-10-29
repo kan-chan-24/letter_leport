@@ -4,7 +4,7 @@ RSpec.describe "Groups", type: :request do
   let(:user) { create(:user) }
 
   before { sign_in user }
-
+  
   describe "POST /groups" do
     context "正しい値のとき" do
       let(:params) { { group: { name: "家族", frequency: "six_month" } } }

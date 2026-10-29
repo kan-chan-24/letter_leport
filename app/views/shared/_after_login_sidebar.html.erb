@@ -5,6 +5,12 @@
 
   <div class="bg-base-200 min-h-full w-80 p-4">
     <ul class="menu w-full p-0">
+      <li>
+        <% active = current_page?(mypage_path) %>
+        <%= link_to mypage_path, class: "flex items-center gap-3 py-2.5 text-base #{active ? 'menu-active !bg-base-300 !text-base-content font-bold' : ''}" do %>
+          <span><%= current_user.name %>の部屋</span>
+        <% end %>
+      </li>
       <li class="menu-title text-xs font-normal text-base-content/50">参加しているグループ</li>
       <% current_user.groups.each do |group| %>
         <% active = current_group&.id == group.id %>

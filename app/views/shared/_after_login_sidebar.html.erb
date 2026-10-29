@@ -10,8 +10,7 @@
         <% active = current_group&.id == group.id %>
         <li>
           <%= link_to group_path(group),
-                class: "flex items-center gap-3 py-2.5 text-base #{active ? 'menu-active !bg-base-300 !text-base-content font-bold' : ''}",
-                aria: { current: (active ? "page" : nil) } do %>
+                class: "flex items-center gap-3 py-2.5 text-base #{active ? 'menu-active !bg-base-300 !text-base-content font-bold' : ''}" do %>
             <span class="truncate"><%= group.name %></span>
           <% end %>
         </li>

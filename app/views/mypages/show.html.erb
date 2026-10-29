@@ -15,22 +15,25 @@
   <div class="grid gap-6 lg:grid-cols-[1fr_15rem]">
     <%# ----- TL ----- %>
     <section class="order-2 lg:order-1">
-      <% unless current_user.group_members.exists? %>
-         <%= link_to new_group_path, class: "group block rounded-box focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" do %>
-            <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center
-                        transition duration-200
-                        group-hover:border-primary group-hover:bg-base-200
-                        group-active:scale-[0.98] group-active:bg-base-300">
-              <p class="font-semibold transition-colors group-hover:text-primary">参加しているグループがありません</p>
-              <p class="mt-1 text-sm text-base-content/60">グループを作ってみましょう！</p>
-            </div>
-          <% end %>
+      <%# 投稿機能が出来次第、 所属がない時 elsif 投稿状況の取得 else 投稿を促す の流れにif構成を変更する %>
+      <% if current_user.group_members.exists? %>
+        <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
+        <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
+          <p class="font-semibold">まだ近況は届いていません</p>
+          <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
+        </div>
+      <% else %>
+        <%# グループ作成の案内 %>
+        <%= link_to new_group_path, class: "group block rounded-box focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" do %>
+          <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center
+                      transition duration-200
+                      group-hover:border-primary group-hover:bg-base-200
+                      group-active:scale-[0.98] group-active:bg-base-300">
+            <p class="font-semibold transition-colors group-hover:text-primary">参加しているグループがありません</p>
+            <p class="mt-1 text-sm text-base-content/60">グループを作ってみましょう！</p>
+          </div>
+        <% end %>
       <% end %>
-      <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
-      <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
-        <p class="font-semibold">まだ近況は届いていません</p>
-        <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
-      </div>
     </section>
 
     <%# ----- サイド情報 ----- %>

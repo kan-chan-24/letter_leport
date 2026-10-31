@@ -1,13 +1,13 @@
-<section class="max-w-6xl mx-auto px-4 py-16 md:py-16 grid lg:grid-cols-2 gap-12 items-center">
+<section class="max-w-6xl mx-auto px-4 py-16 grid lg:grid-cols-[6fr_5fr] gap-12 items-center">
   <%# 左：キャッチコピーエリア %>
   <div>
     <h1 class="mt-6 text-3xl md:text-5xl lg:text-4xl xl:text-5xl font-bold leading-snug">
-      <span class="inline-block">離れていても、</span><span class="inline-block">連絡不精でも。</span><br>
+      <span class="inline-block">離れていても、</span><span class="inline-block">連絡がマメじゃなくても。</span><br>
       <span class="inline-block"><span class="text-primary">お互いの気配</span>を</span><span class="inline-block">そっと</span><span class="inline-block">感じ合える場所。</span>
     </h1>
 
     <p class="mt-6 leading-relaxed text-base-content/70">
-      ゆるやかな定期通知と、30秒で選べる「調子」の共有で、大切な家族や友人との疎遠を防ぐ近況報告サービスです。
+      <%= phrase_wrap("ゆるやかな定期通知と、30秒で選べる「調子」の共有で、\n大切な家族や友人との疎遠を防ぐ近況報告サービスです。") %>
     </p>
 
     <div class="mt-8 flex flex-col sm:flex-row gap-3">
@@ -28,3 +28,7 @@
   <%# 右：投稿イメージ（後で作成） %>
   <div></div>
 </section>
+<%# 下： アプリの特徴紹介 %>
+<%= render "shared/app_intro" %>
+<%# 最下段： 最後の登録案内 %>
+<%= render "signup_cta" %>

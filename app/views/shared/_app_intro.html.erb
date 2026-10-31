@@ -45,7 +45,6 @@
           <div class="mb-4 flex size-12 items-center justify-center rounded-full text-2xl <%= challenge[:tint] %>" aria-hidden="true">
             <%= challenge[:icon] %>
           </div>
-          <p class="text-xs text-base-content/60">お悩み <%= format("%02d", i) %></p>
           <%# 見出しは「、」で必ず改行して2行に揃える %>
           <h3 class="mt-1 font-bold leading-snug"><%= phrase_wrap(challenge[:title], block: true) %></h3>
           <p class="mt-3 text-sm leading-relaxed text-base-content/70"><%= phrase_wrap(challenge[:body]) %></p>

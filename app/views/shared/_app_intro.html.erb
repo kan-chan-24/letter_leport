@@ -1,0 +1,106 @@
+<%
+  challenges = [
+    { icon: "⏳", tint: "bg-primary/10",
+      title: "大切に思っているのに、連絡するきっかけがつくれない",
+      body: "家族や友人でも離れてしまうと、用事がなければ連絡しないまま。\n気づけば数ヶ月、大切な人はちゃんと元気でしょうか？" },
+    { icon: "💬", tint: "bg-secondary/15",
+      title: "久しぶりの「最近どう？」は、少し重く感じる",
+      body: "ちょうどいい話題を考えて、リズムよく会話を続けて……。\n親しい人が親しかった人になると、一言目を送る前に構えてしまう。" },
+    { icon: "🔕", tint: "bg-primary/10",
+      title: "タイムラインでは届かない。チャットでは会話が重い。",
+      body: "タイムラインはみんなに向けた場所で、届けたい人の目に留まるとは限らない。\nチャットは会話が続き、「元気だよ」だけでは終われない。" }
+  ]
+
+  features = [
+    { icon: "😊", title: "3つの項目を選ぶだけ",
+      body: "「体調」「日々のこと」「楽しみ」を、5段階の表情から選ぶだけ。\n忙しいときでも、今の調子が30秒で伝わります。" },
+    { icon: "🔔", title: "ほどよい間隔のお知らせ",
+      body: "週1回〜年1回まで、グループに合った頻度を選べます。\nお知らせが届いたときが、近況を送るきっかけです。" },
+    { icon: "👍", title: "招待した人だけの場所",
+      body: "招待リンクで参加したメンバーだけに、近況を伝えられます。\n会話はいつものSNSに任せて、スタンプで「見たよ」を返すだけ。" }
+  ]
+
+  steps = [
+    { title: "アカウントを登録する",
+      body: "名前とメールアドレス、パスワードを入力するだけで、すぐに始められます。" },
+    { title: "グループを作る・参加する",
+      body: "グループを作って、招待リンクを送ります。\nまたは届いた招待リンクから、グループへ参加します。" },
+    { title: "お知らせが来たら近況を送る",
+      body: "3つの項目を選んで送るだけ。\nメンバーの近況は、期間ごとにまとめて見られます。" }
+  ]
+%>
+
+<%# ===== お悩み（使用動機）：背景色を画面幅いっぱいに敷く ===== %>
+<section class="bg-base-200">
+  <div class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
+    <div class="mb-8 text-center">
+      <p class="text-xs font-semibold tracking-widest text-primary">CHALLENGES</p>
+      <h2 class="mt-2 text-xl font-bold sm:text-2xl">こんな気持ち、抱えていませんか？</h2>
+      <p class="mt-2 text-sm text-base-content/70"><%= phrase_wrap("気にかけている相手ほど、連絡のハードルは上がってしまうものです。") %></p>
+    </div>
+
+    <ul class="grid gap-4 lg:grid-cols-3">
+      <% challenges.each.with_index(1) do |challenge, i| %>
+        <li class="rounded-box bg-base-100 p-6 shadow-sm">
+          <div class="mb-4 flex size-12 items-center justify-center rounded-full text-2xl <%= challenge[:tint] %>" aria-hidden="true">
+            <%= challenge[:icon] %>
+          </div>
+          <p class="text-xs text-base-content/60">お悩み <%= format("%02d", i) %></p>
+          <%# 見出しは「、」で必ず改行して2行に揃える %>
+          <h3 class="mt-1 font-bold leading-snug"><%= phrase_wrap(challenge[:title], block: true) %></h3>
+          <p class="mt-3 text-sm leading-relaxed text-base-content/70"><%= phrase_wrap(challenge[:body]) %></p>
+        </li>
+      <% end %>
+    </ul>
+
+    <%# ----- まとめの一文：スマホは縦積み、sm以上で横並び ----- %>
+    <div class="mt-6 flex flex-col items-start gap-3 rounded-box bg-base-300/60 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <p class="flex items-center gap-3 font-bold">
+        <span class="text-2xl text-primary" aria-hidden="true">♡</span>
+        <span><%= phrase_wrap("近況を送るだけの場所があれば、用事がなくてもつながり続けられます。") %></span>
+      </p>
+      <a href="#features" class="btn btn-sm shrink-0 rounded-full bg-base-100">特徴を見る ↓</a>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-5xl px-4 py-12 sm:py-16">
+  <%# ----- 3つの特徴 ----- %>
+  <div id="features" class="mb-8 text-center scroll-mt-20">
+    <p class="text-xs font-semibold tracking-widest text-primary">FEATURES</p>
+    <h2 class="mt-2 text-xl font-bold sm:text-2xl">3つの特徴</h2>
+  </div>
+
+  <ul class="grid gap-4 lg:grid-cols-3">
+    <% features.each do |feature| %>
+      <li class="rounded-box bg-base-100 p-6 shadow-sm ring-1 ring-base-300">
+        <div class="mb-4 flex size-12 items-center justify-center rounded-full bg-primary/10 text-2xl" aria-hidden="true">
+          <%= feature[:icon] %>
+        </div>
+        <h3 class="font-bold"><%= feature[:title] %></h3>
+        <p class="mt-2 text-sm leading-relaxed text-base-content/70"><%= phrase_wrap(feature[:body]) %></p>
+      </li>
+    <% end %>
+  </ul>
+
+  <%# ----- はじめかた（3ステップ） ----- %>
+  <div class="mb-8 mt-16 text-center">
+    <p class="text-xs font-semibold tracking-widest text-primary">HOW TO START</p>
+    <h2 class="mt-2 text-xl font-bold sm:text-2xl">はじめかた</h2>
+  </div>
+
+  <ol class="grid gap-4 lg:grid-cols-3">
+    <% steps.each.with_index(1) do |step, i| %>
+      <%# lg未満は番号が左（横並び）、lg以上は番号が上（縦並び） %>
+      <li class="flex gap-4 rounded-box bg-base-200 p-5 lg:flex-col">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary font-bold text-primary-content">
+          <%= i %>
+        </span>
+        <div>
+          <h3 class="font-bold"><%= step[:title] %></h3>
+          <p class="mt-1 text-sm leading-relaxed text-base-content/70"><%= phrase_wrap(step[:body]) %></p>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+</section>

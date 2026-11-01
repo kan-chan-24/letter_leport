@@ -50,13 +50,25 @@
         </div>
       </div>
 
-      <%# 確認用。招待リンクのコピー機能ができたら削除する %>
-      <details class="collapse collapse-arrow border border-base-300 bg-base-100">
-        <summary class="collapse-title text-sm">招待トークン（確認用）</summary>
-        <div class="collapse-content">
-          <p class="break-all font-mono text-xs"><%= @group.invite_token %></p>
+      <%# 招待リンクのコピー %>
+      <div class="card border border-base-300 bg-base-100"
+           data-controller="clipboard"
+           data-clipboard-url-value="<%= invitation_url(@group.invite_token) %>">
+        <div class="card-body items-center gap-3 p-4 text-center">
+          <p class="text-sm text-base-content/70">メンバーを招待</p>
+          <button type="button"
+                  class="btn btn-outline btn-primary btn-sm btn-block"
+                  data-action="clipboard#copy"
+                  data-clipboard-target="button">
+            招待リンクをコピー
+          </button>
+          <p class="hidden text-xs text-base-content/60"
+             data-clipboard-target="message"
+             aria-live="polite">
+            招待したい人にリンクを送りましょう
+          </p>
         </div>
-      </details>
+      </div>
     </aside>
   </div>
 </div>

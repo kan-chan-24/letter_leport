@@ -5,4 +5,7 @@ Rails.application.routes.draw do
   get "mypage", to: "mypages#show"
 
   resources :groups, only: [ :new, :create, :show ]
+
+  # 招待ページ
+  resources :invitations, only: [ :show ], param: :token
 end

@@ -7,7 +7,7 @@ class GroupMembersController < AuthenticatedController
     member = group.group_members.find_or_create_by(user: current_user) do |member|
       member.role = :member
     end
-  
+
     # 直前の保存で新しく作られたレコードだった場合、trueを返す
     if member.previously_new_record?
       flash[:notice] = "#{group.name}に参加しました"

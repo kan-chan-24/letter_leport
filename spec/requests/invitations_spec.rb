@@ -27,7 +27,7 @@ RSpec.describe "Invitations", type: :request do
       end
 
       it "未ログインなら、トークンがセッションに保存される" do
-        expect(session[:invitation_token]).to eq(group.invite_token)
+        expect(session[:invite_token]).to eq(group.invite_token)
       end
     end
 

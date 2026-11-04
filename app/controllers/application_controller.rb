@@ -26,7 +26,9 @@ class ApplicationController < ActionController::Base
     return mypage_path if group.nil?
 
     # 招待経由の場合に限り下記の処理が行われる
-    group.add_member(resource)
+    member = group.add_member(resource)
+    flash[:notice] = "#{group.name}に参加しました" if member.previously_new_record?
+
     group_path(group)
   end
 end

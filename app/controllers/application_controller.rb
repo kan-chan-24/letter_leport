@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
     # 招待経由でなければ個人ページへ
     return mypage_path if group.nil?
 
+    # 招待経由の場合に限り下記の処理が行われる
     group.add_member(resource)
     group_path(group)
   end

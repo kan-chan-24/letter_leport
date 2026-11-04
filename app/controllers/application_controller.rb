@@ -15,8 +15,17 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:sign_up, keys: [ :name ])
   end
 
-  # 新規登録が成功するとそのままログイン状態にする
+  # 新規登録が成功すると作用する
+  # ログイン・新規登録後の移動先を決める
   def after_sign_in_path_for(resource)
-    mypage_path
+    # トークンを取り出す（同時にセッションから消える）
+    token = session.delete(:invite_token)
+    group = Group.find_by(invite_token: token) if token
+
+    # 招待経由でなければ個人ページへ
+    return mypage_path if group.nil?
+
+    group.add_member(resource)
+    group_path(group)
   end
 end

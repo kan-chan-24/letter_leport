@@ -7,6 +7,6 @@ class InvitationsController < ApplicationController
 
     # ここから下は、グループが見つかったときだけ実行される
     @members = @group.users
-    session[:invitation_token] = params[:token] unless user_signed_in?
+    session[:invite_token] = params[:token] unless user_signed_in?
   end
 end

@@ -20,6 +20,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_143615) do
     t.integer "role", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    # 複合indexのユニーク制約で二重登録を防ぐ
     t.index ["group_id", "user_id"], name: "index_group_members_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_group_members_on_group_id"
     t.index ["user_id"], name: "index_group_members_on_user_id"

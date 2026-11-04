@@ -39,6 +39,14 @@ class Group < ApplicationRecord
     preset&.dig(:label)
   end
 
+  # グループへの新メンバー参加処理
+  def add_member(user)
+    # group_membersからユーザー情報を検索し、ヒットしなければ新しく作成する
+    group_members.find_or_create_by(user: user) do |member|
+      member.role = :member
+    end
+  end
+
   private
 
   def max_interval_count

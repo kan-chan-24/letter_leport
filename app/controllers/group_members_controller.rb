@@ -4,9 +4,7 @@ class GroupMembersController < AuthenticatedController
     group = Group.find_by!(invite_token: params[:invitation_token])
 
     # メンバー表に新レコード（新ユーザー）を作成
-    member = group.group_members.find_or_create_by(user: current_user) do |member|
-      member.role = :member
-    end
+    member = group.add_member(current_user)
 
     # 直前の保存で新しく作られたレコードだった場合、trueを返す
     if member.previously_new_record?

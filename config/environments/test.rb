@@ -55,5 +55,7 @@ Rails.application.configure do
     Bullet.enable        = true
     Bullet.bullet_logger = true
     Bullet.raise         = true  # N+1が起きたら例外 → テスト失敗
+    # サイドバーの current_user.groups は1人分のみ取得するため、誤検知として除外
+    Bullet.add_safelist type: :n_plus_one_query, class_name: "User", association: :groups
   end
 end

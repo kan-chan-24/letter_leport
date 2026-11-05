@@ -1,6 +1,8 @@
 class GroupsController < AuthenticatedController
-  # ログインユーザーのみアクセス許可は、authenticated_controllerで済み
-  before_action :set_group, only: [ :show ]
+  # ログインユーザーのみのアクセス許可は、authenticated_controllerで済み
+  before_action :set_group, only: [ :show, :edit, :update ]
+  # グループ設定へのアクセス制限（ホストのみ）
+  before_action :require_host, only: [ :edit, :update ]
 
   def new
     @group = Group.new
@@ -28,16 +30,34 @@ class GroupsController < AuthenticatedController
   end
 
   def update
+    if @group.update(group_settings_params)
+      redirect_to edit_group_path(@group), notice: "設定を保存しました"
+    else
+      flash.now[:alert] = "設定を保存できませんでした"
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
 
+  # グループを作成する時用
   def group_params
     params.require(:group).permit(:name, :frequency)
+  end
+
+  # グループ設定を編集する時用
+  def group_settings_params
+    params.require(:group).permit(:name)
   end
 
   def set_group
     @group = current_user.groups.find_by(id: params[:id])
     redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
+  end
+
+  def require_host
+    return if @group.host?(current_user)
+
+    redirect_to group_path(@group), alert: "グループ設定はホストのみ操作できます"
   end
 end

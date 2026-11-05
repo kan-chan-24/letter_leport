@@ -24,6 +24,12 @@ class GroupsController < AuthenticatedController
     # before_actionで@groupはセット済みなので、すでに@groupが使用可能な状態
   end
 
+  def edit
+  end
+
+  def update
+  end
+
   private
 
   def group_params

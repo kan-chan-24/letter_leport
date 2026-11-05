@@ -47,6 +47,11 @@ class Group < ApplicationRecord
     end
   end
 
+  # ユーザーがホストかメンバーか判断する
+  def host?(user)
+    group_members.host.exists?(user: user)
+  end
+
   private
 
   def max_interval_count

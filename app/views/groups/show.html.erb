@@ -1,8 +1,11 @@
 <div class="mx-auto max-w-5xl px-4 py-8">
-  <%# ===== グループのヘッダー：グループ名（右側に招待リンク・グループ設定ボタンを後のissueで追加） ===== %>
+
+  <%# グループのヘッダー：グループ名 設定ボタン %>
   <div class="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-4">
     <h1 class="text-2xl font-bold"><%= @group.name %></h1>
-    <%# TODO: 招待リンクのコピー・グループ設定ボタン（別issue） %>
+    <% if @group.host?(current_user) %>
+      <%= link_to "グループ設定", edit_group_path(@group), class: "btn btn-outline btn-secondary btn-sm" %>
+    <% end %>
   </div>
 
   <%# ===== 期間の見出し＋参加メンバー ===== %>

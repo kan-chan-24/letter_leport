@@ -79,4 +79,28 @@ RSpec.describe "グループ設定", type: :request do
       expect(response.body).not_to include(edit_group_path(group))
     end
   end
+
+  describe "PATCH /groups/:id（通知頻度）" do
+    # 外側の group を「月1回」で作るように上書きするだけ
+    let(:group) { create(:group, name: "変更前の名前", frequency: "one_month") }
+
+    before do
+      sign_in host_user  # 外側で用意済みのホストを使う
+      travel 2.months
+    end
+    after { travel_back }
+
+    it "頻度を変えると次回通知日時が更新される" do
+      expect {
+        patch group_path(group), params: { group: { name: group.name, frequency: "one_week" } }
+      }.to change { group.reload.next_notify_at }
+      expect(group.reload.interval_unit).to eq "week"
+    end
+
+    it "グループ名だけ変えると次回通知日時は変わらない" do
+      expect {
+        patch group_path(group), params: { group: { name: "新しい名前", frequency: "one_month" } }
+      }.not_to change { group.reload.next_notify_at }
+    end
+  end
 end

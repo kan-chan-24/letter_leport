@@ -19,11 +19,11 @@ class Group < ApplicationRecord
   }.freeze
 
   # バリデーションの直前に、frequency を interval_unit などに変換する（空チェック前に値を入れておきたい）
-  before_validation :apply_frequency_preset, on: :create
+  before_validation :apply_frequency_preset
 
   validates :name, presence: true
   validates :invite_token, presence: true, uniqueness: true
-  validates :frequency, inclusion: { in: FREQUENCY_PRESET.keys.map(&:to_s), message: "を選択してください" }, on: :create
+  validates :frequency, inclusion: { in: FREQUENCY_PRESET.keys.map(&:to_s), message: "を選択してください" }
   validates :interval_unit, presence: true
   validates :interval_count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: :max_interval_count }
   validates :notify_day_of_week, presence: true, numericality: { only_integer: true, in: 0..6 }

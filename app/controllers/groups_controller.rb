@@ -47,7 +47,7 @@ class GroupsController < AuthenticatedController
 
   # グループ設定を編集する時用
   def group_settings_params
-    params.require(:group).permit(:name)
+    params.require(:group).permit(:name, :frequency)
   end
 
   def set_group

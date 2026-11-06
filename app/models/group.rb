@@ -31,6 +31,17 @@ class Group < ApplicationRecord
   validates :notify_hour, presence: true, numericality: { only_integer: true, in: 0..23 }
   validates :next_notify_at, presence: true
 
+  # 仮想属性 frequency の読み出しを上書きする
+  # フォームから値が来ていればその値、なければ保存済みのカラムからプリセットのキーを逆引きして返す
+  def frequency
+    # 新規作成時は、フォームから来た値だけを見る（逆引きしない）
+    return super if new_record?
+
+    super.presence || FREQUENCY_PRESET.find { |_key, p|
+      p[:interval_unit] == interval_unit && p[:interval_count] == interval_count
+    }&.first&.to_s
+  end
+
   # 保存済みの interval_unit・interval_count から、表示用のラベル（例: "半年に1回"）を返す
   def frequency_label
     preset = FREQUENCY_PRESET.values.find do |p|
@@ -65,6 +76,9 @@ class Group < ApplicationRecord
 
     self.interval_unit  = preset[:interval_unit]
     self.interval_count = preset[:interval_count]
+
+    # 新規作成のとき、または頻度が変わったときだけ次回通知日時を計算し直す
+    return unless new_record? || interval_unit_changed? || interval_count_changed?
 
     self.next_notify_at = NotifyAtCalculator.first_notify_at(
       base_time: Time.current,

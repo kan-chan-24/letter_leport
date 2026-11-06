@@ -16,6 +16,14 @@
       <%= f.text_field :name, class: "input input-bordered w-full" %>
     </div>
 
+    <div class="mb-6">
+      <%= f.label :frequency, "通知頻度", class: "label" %>
+      <%= f.select :frequency,
+            Group::FREQUENCY_PRESET.map { |key, preset| [preset[:label], key.to_s] },
+            {},
+            class: "select select-bordered w-full" %>
+    </div>
+
     <%= f.submit "設定を保存する", class: "btn btn-primary" %>
   <% end %>
 </div>

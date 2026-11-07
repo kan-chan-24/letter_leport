@@ -17,29 +17,39 @@
     </div>
 
     <div class="mb-6">
-      <%= f.label :frequency, "通知頻度", class: "label" %>
+      <%= f.label :frequency, "通知頻度の変更", class: "label" %>
       <%= f.select :frequency,
             Group::FREQUENCY_PRESET.map { |key, preset| [preset[:label], key.to_s] },
             {},
             class: "select select-bordered w-full" %>
     </div>
-    <%= f.submit "設定を保存する", class: "btn btn-primary" %>
+    <div class="flex justify-end">
+      <%= f.submit "設定を保存する", class: "btn btn-primary" %>
+    </div>
   <% end %>
 
   <section class="mt-6 mb-6">
-    <h3 class="label">メンバー一覧</h3>
+    <h3 class="label">メンバーの確認</h3>
 
-    <ul>
+    <ul class="mt-2 divide-y divide-base-300 rounded-box border border-base-300 bg-base-100">
       <% @group_members.each do |group_member| %>
-        <li>
-          <span><%= group_member.user.name %></span>
-          <span><%= group_member.host? ? "ホスト" : "メンバー" %></span>
+        <li class="flex items-center justify-between gap-3 px-4 py-3">
+          <div class="flex min-w-0 items-center gap-2">
+            <% if group_member.host? %>
+              <span class="badge w-18 badge-primary badge-sm shrink-0">ホスト</span>
+            <% else %>
+              <span class="badge w-18 badge-ghost badge-sm shrink-0">メンバー</span>
+            <% end %>
+            <span class="truncate font-medium"><%= group_member.user.name %></span>
+          </div>
 
           <% unless group_member.host? %>
             <%= button_to "除籍する",
                   group_group_member_path(@group, group_member),
                   method: :delete,
-                  form: { data: { turbo_confirm: "#{group_member.user.name}さんをグループから外します。よろしいですか？" } } %>
+                  class: "btn btn-outline btn-error btn-sm",
+                  form: { class: "shrink-0",
+                          data: { turbo_confirm: "#{group_member.user.name}さんをグループから外します。よろしいですか？" } } %>
           <% end %>
         </li>
       <% end %>

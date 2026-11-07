@@ -28,7 +28,7 @@
       <h3 class="label">メンバー一覧</h3>
 
       <ul>
-        <% @group.group_members.each do |group_member| %>
+        <% @group_members.each do |group_member| %>
           <li>
             <span><%= group_member.user.name %></span>
             <span><%= group_member.host? ? "ホスト" : "メンバー" %></span>

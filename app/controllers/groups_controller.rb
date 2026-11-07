@@ -27,6 +27,7 @@ class GroupsController < AuthenticatedController
   end
 
   def edit
+    @group_members = @group.group_members.includes(:user)
   end
 
   def update

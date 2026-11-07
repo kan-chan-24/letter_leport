@@ -23,27 +23,26 @@
             {},
             class: "select select-bordered w-full" %>
     </div>
-
-    <section class="mb-6">
-      <h3 class="label">メンバー一覧</h3>
-
-      <ul>
-        <% @group_members.each do |group_member| %>
-          <li>
-            <span><%= group_member.user.name %></span>
-            <span><%= group_member.host? ? "ホスト" : "メンバー" %></span>
-
-            <% unless group_member.host? %>
-              <%= button_to "除籍する",
-                    group_group_member_path(@group, group_member),
-                    method: :delete,
-                    form: { data: { turbo_confirm: "#{group_member.user.name}さんをグループから外します。よろしいですか？" } } %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    </section>
-
     <%= f.submit "設定を保存する", class: "btn btn-primary" %>
   <% end %>
+
+  <section class="mt-6 mb-6">
+    <h3 class="label">メンバー一覧</h3>
+
+    <ul>
+      <% @group_members.each do |group_member| %>
+        <li>
+          <span><%= group_member.user.name %></span>
+          <span><%= group_member.host? ? "ホスト" : "メンバー" %></span>
+
+          <% unless group_member.host? %>
+            <%= button_to "除籍する",
+                  group_group_member_path(@group, group_member),
+                  method: :delete,
+                  form: { data: { turbo_confirm: "#{group_member.user.name}さんをグループから外します。よろしいですか？" } } %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
 </div>

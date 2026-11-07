@@ -3,6 +3,8 @@ class GroupsController < AuthenticatedController
   before_action :set_group, only: [ :show, :edit, :update ]
   # グループ設定へのアクセス制限（ホストのみ）
   before_action :require_host, only: [ :edit, :update ]
+  # 編集画面・更新時は、事前にグループメンバー表をセットしておく
+  before_action :set_group_members, only: [ :edit, :update ]
 
   def new
     @group = Group.new
@@ -27,7 +29,6 @@ class GroupsController < AuthenticatedController
   end
 
   def edit
-    @group_members = @group.group_members.includes(:user)
   end
 
   def update
@@ -54,6 +55,10 @@ class GroupsController < AuthenticatedController
   def set_group
     @group = current_user.groups.find_by(id: params[:id])
     redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
+  end
+
+  def set_group_members
+    @group_members = @group.group_members.includes(:user)
   end
 
   def require_host

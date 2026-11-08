@@ -1,7 +1,11 @@
 class ApplicationJob < ActiveJob::Base
-  # Automatically retry jobs that encountered a deadlock
-  # retry_on ActiveRecord::Deadlocked
+  # どこにキューを入れるかを一応defaultに指定
+  queue_as :default
 
-  # Most jobs are safe to ignore if the underlying records are no longer available
-  # discard_on ActiveJob::DeserializationError
+  # テスト的なジョブ
+  def perform(name)
+    Rails.logger.info("SampleJobを開始します：#{name}")
+    sleep(5) # 時間のかかる処理を再現
+    Rails.logger.info("SampleJobが完了しました：#{name}")
+  end
 end

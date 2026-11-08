@@ -21,6 +21,7 @@ services:
       DATABASE_HOST: db
       DATABASE_USER: postgres
       DATABASE_PASSWORD: password
+      SOLID_QUEUE_IN_PUMA: "true"
     depends_on:
       - db
     tty: true

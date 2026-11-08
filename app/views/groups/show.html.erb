@@ -1,0 +1,77 @@
+<div class="mx-auto max-w-5xl px-4 py-8">
+
+  <%# グループのヘッダー：グループ名 設定ボタン %>
+  <div class="mb-6 flex flex-wrap items-center justify-between gap-3 border-b border-base-300 pb-4">
+    <h1 class="text-2xl font-bold"><%= @group.name %></h1>
+    <% if @group.host?(current_user) %>
+      <%= link_to "グループ設定", edit_group_path(@group), class: "btn btn-outline btn-secondary btn-sm" %>
+    <% end %>
+  </div>
+
+  <%# ===== 期間の見出し＋参加メンバー ===== %>
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <%# 期間の切り替え（◀ ▶）は「期間ごとのTL表示」のissueで追加 %>
+    <h2 class="text-lg font-bold">みんなの近況</h2>
+
+    <div class="flex items-center gap-2">
+      <span class="text-sm text-base-content/70">参加メンバー</span>
+      <ul class="flex -space-x-2">
+        <% @group.group_members.includes(:user).each do |member| %>
+          <%# 仮アイコン（頭文字だけ）。写真対応時はヘルパーに置き換える %>
+          <li title="<%= member.user.name %><%= '（ホスト）' if member.host? %>"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary ring-2 ring-base-100">
+            <%= member.user.name.first %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <%# ===== 本体：左にTL、右にサイド情報（スマホでは右側の内容が上に来る） ===== %>
+  <div class="grid gap-6 lg:grid-cols-[1fr_15rem]">
+    <%# ----- TL ----- %>
+    <section class="order-2 lg:order-1">
+      <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
+      <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
+        <p class="font-semibold">まだ近況は届いていません</p>
+        <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
+      </div>
+    </section>
+
+    <%# ----- サイド情報 ----- %>
+    <aside class="order-1 space-y-4 lg:order-2">
+      <%# 遷移先は投稿機能の実装後に link_to へ置き換える %>
+      <%= tag.button "近況を書き始める", type: "button", class: "btn btn-primary btn-block", disabled: true %>
+
+      <div class="card border border-base-300 bg-base-100">
+        <div class="card-body items-center p-4 text-center">
+          <p class="text-sm text-base-content/70">現在の連絡頻度</p>
+          <p class="text-lg font-bold text-primary"><%= @group.frequency_label %></p>
+          <p class="text-xs text-base-content/60">
+            次回の通知：<%= @group.next_notify_at.strftime("%Y年%-m月%-d日 %H:%M") %>
+          </p>
+        </div>
+      </div>
+
+      <%# 招待リンクのコピー %>
+      <div class="card border border-base-300 bg-base-100"
+           data-controller="clipboard"
+           data-clipboard-url-value="<%= invitation_url(@group.invite_token) %>">
+        <div class="card-body items-center gap-3 p-4 text-center">
+          <p class="text-sm text-base-content/70">メンバーを招待</p>
+          <button type="button"
+                  class="btn btn-outline btn-primary btn-sm btn-block"
+                  data-action="clipboard#copy"
+                  data-clipboard-target="button">
+            招待リンクをコピー
+          </button>
+          <p class="hidden text-xs text-base-content/60"
+             data-clipboard-target="message"
+             aria-live="polite">
+            招待したい人にリンクを送りましょう
+          </p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

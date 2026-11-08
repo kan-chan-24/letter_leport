@@ -1,0 +1,37 @@
+<div class="max-w-md mx-auto px-4 py-10 space-y-8">
+  <%# 見出し %>
+  <div class="text-center space-y-2">
+    <h1 class="text-2xl font-bold">あなたへ、招待状が届いています</h1>
+  </div>
+
+  <%# 招待カード %>
+  <div class="card bg-base-100 shadow-md">
+    <div class="card-body items-center text-center space-y-3">
+      <p class="text-sm text-base-content/70">参加先のグループ</p>
+      <h2 class="card-title text-xl"><%= @group.name %></h2>
+
+      <div class="divider my-0"></div>
+
+      <p class="text-sm">参加メンバー（<%= @members.size %>人）</p>
+      <div class="flex flex-wrap justify-center gap-2">
+        <% @members.each do |member| %>
+          <span class="badge badge-outline"><%= member.name %></span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <%# ボタン %>
+  <div class="flex flex-col gap-3">
+    <% if user_signed_in? %>
+      <%= button_to "参加する", invitation_group_members_path(params[:token]), class: "btn btn-primary" %>
+    <% else %>
+      <%= link_to "新規登録して参加", new_user_registration_path, class: "btn btn-primary" %>
+      <%= link_to "ログインして参加", new_user_session_path, class: "btn btn-outline" %>
+    <% end %>
+  </div>
+</div>
+<%# アプリ紹介エリア %>
+<%= render "shared/app_intro" %>
+<%# 最後の案内登録 %>
+<%= render "invitation_cta" %>

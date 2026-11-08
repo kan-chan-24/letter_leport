@@ -1,0 +1,13 @@
+ja:
+  activerecord:
+    models: 
+      user: ユーザー
+    attributes: 
+      user:
+        name: 名前
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード（確認用）
+      group:
+        name: グループ名
+        frequency: 通知の頻度

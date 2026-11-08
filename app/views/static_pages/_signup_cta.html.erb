@@ -1,0 +1,31 @@
+<%# ===== 最後の登録案内（TOPページ専用） ===== %>
+<section class="mx-auto max-w-6xl px-4 pb-16">
+  <div class="relative overflow-hidden rounded-3xl bg-linear-to-br from-primary/85 via-primary to-primary px-6 py-14 text-center text-primary-content shadow-xl sm:py-16">
+    <%# 背景の光（左上を明るく、右下をくすませる） %>
+    <div class="pointer-events-none absolute -left-24 -top-24 size-72 rounded-full bg-white/15 blur-3xl" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute -bottom-24 -right-24 size-72 rounded-full bg-base-100/20 blur-3xl" aria-hidden="true"></div>
+
+    <%# 中身（光より手前に出す） %>
+    <div class="relative">
+      <h2 class="mt-4 text-2xl font-bold leading-snug sm:text-4xl">
+        <%= phrase_wrap("大切な人とのつながりを、\nおだやかに続けよう。") %>
+      </h2>
+
+      <p class="mt-4 text-sm leading-relaxed text-primary-content/85 sm:text-base">
+        <%= phrase_wrap("連絡がマメじゃなくても大丈夫。\n離れても続いていく関係の、はじめのひと声を、あなたから。") %>
+      </p>
+
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <%= link_to new_user_registration_path,
+              class: "btn btn-lg w-full rounded-full border-0 bg-base-100 text-primary hover:bg-base-200 sm:w-auto" do %>
+          無料でアカウント登録
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+          </svg>
+        <% end %>
+        <%= link_to "登録済みの方はこちら（ログイン）", new_user_session_path,
+              class: "btn btn-lg w-full rounded-full border-0 bg-white/15 font-normal text-primary-content hover:bg-white/25 sm:w-auto" %>
+      </div>
+    </div>
+  </div>
+</section>

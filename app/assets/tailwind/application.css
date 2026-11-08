@@ -51,3 +51,13 @@
   --depth: 0;
   --noise: 0;
 }
+
+/* エラー時に生成されるエラーメッセージdivがレイアウトを崩さないようにしている */
+.field_with_errors {
+  display: contents;
+}
+
+/* ベースのフォントを差し替える */
+@theme {
+ --font-sans: "M PLUS Rounded 1c", sans-serif;
+}

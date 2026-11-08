@@ -53,6 +53,9 @@ gem "devise"
 # Deviseの日本語化
 gem "devise-i18n"
 
+# ジョブをlocalhost:3000/jobsで確認できるgem
+gem "mission_control-jobs"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

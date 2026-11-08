@@ -13,4 +13,7 @@ Rails.application.routes.draw do
     # 参加先のグループidに紐づくgroup_membersルーティングを生成
     resources :group_members, only: [ :create ]
   end
+
+  # バックグラウンドのジョブを一覧確認するようのルーティング
+  mount MissionControl::Jobs::Engine, at: "/jobs"
 end

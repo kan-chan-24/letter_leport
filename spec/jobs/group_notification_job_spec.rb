@@ -2,9 +2,10 @@
 require "rails_helper"
 
 RSpec.describe GroupNotificationJob, type: :job do
-  # テスト中の「現在時刻」を固定する
+  # テスト中の「現在時刻」を固定する（2026/11/9/10:00）
   before { travel_to Time.zone.local(2026, 11, 9, 10, 0) }
 
+  # 通知日時が過ぎたグループを用意する
   let!(:past_group) do
     create(:group).tap do |group|
       group.update_columns(
@@ -15,8 +16,11 @@ RSpec.describe GroupNotificationJob, type: :job do
     end
   end
 
+  # 通知日時がまだ来ていないグループを用意する
   let!(:future_group) do
-    create(:group, next_notify_at: Time.zone.local(2026, 11, 9, 11, 0))
+    create(:group).tap do |group|
+      group.update_columns(next_notify_at: Time.zone.local(2026, 11, 9, 11, 0))
+    end
   end
 
   it "通知日時を過ぎたグループは、前回の通知日時の1週間後に更新される" do

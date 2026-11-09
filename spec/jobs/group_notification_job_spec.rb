@@ -7,12 +7,8 @@ RSpec.describe GroupNotificationJob, type: :job do
 
   # 通知日時が過ぎたグループを用意する
   let!(:past_group) do
-    create(:group).tap do |group|
-      group.update_columns(
-        interval_unit: "week",
-        interval_count: 1,
-        next_notify_at: Time.zone.local(2026, 11, 9, 9, 0)
-      )
+    create(:group, frequency: "one_week").tap do |group|
+      group.update_column(:next_notify_at, Time.zone.local(2026, 11, 9, 9, 0))
     end
   end
 

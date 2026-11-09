@@ -20,8 +20,6 @@ RSpec.describe GroupNotificationJob, type: :job do
   end
 
   it "通知日時を過ぎたグループは、前回の通知日時の1週間後に更新される" do
-    puts "===== ジョブ実行前 ====="
-    pp past_group.reload.attributes   # ← 一時的に追加
     described_class.perform_now
     expect(past_group.reload.next_notify_at).to eq Time.zone.local(2026, 11, 16, 9, 0)
   end

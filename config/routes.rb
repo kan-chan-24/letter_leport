@@ -16,4 +16,9 @@ Rails.application.routes.draw do
 
   # バックグラウンドのジョブを一覧確認するようのルーティング
   mount MissionControl::Jobs::Engine, at: "/jobs"
+
+  # cron-job.orgがアクセスする用のURL（通知日時更新ジョブを登録させるためのURL）
+  namespace :cron do
+    resource :notification, only: :create
+  end
 end

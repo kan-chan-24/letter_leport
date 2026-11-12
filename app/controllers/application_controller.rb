@@ -22,8 +22,8 @@ class ApplicationController < ActionController::Base
     token = session.delete(:invite_token)
     group = Group.find_by(invite_token: token) if token
 
-    # 招待経由でなければ個人ページへ
-    return mypage_path if group.nil?
+    # 招待経由でなければ、元々行きたかったページ（なければ個人ページ）へ
+    return stored_location_for(resource) || mypage_path if group.nil?
 
     # 招待経由の場合に限り下記の処理が行われる
     member = group.add_member(resource)

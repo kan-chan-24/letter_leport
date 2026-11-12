@@ -74,6 +74,9 @@ group :development, :test do
   gem "faker"
 
   gem "simplecov", require: false
+
+  # メールチェック用gem
+  gem "letter_opener_web"
 end
 
 group :development do

@@ -56,6 +56,8 @@ gem "devise-i18n"
 # ジョブをlocalhost:3000/jobsで確認できるgem
 gem "mission_control-jobs"
 
+gem "resend"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
@@ -74,6 +76,9 @@ group :development, :test do
   gem "faker"
 
   gem "simplecov", require: false
+
+  # メールチェック用gem
+  gem "letter_opener_web"
 end
 
 group :development do

@@ -18,6 +18,11 @@ Rails.application.configure do
   # solid_queueをアダプター接続
   config.active_job.queue_adapter = :solid_queue
 
+  # メールを実際には送らずにletter_opener_webに保存する設定
+  config.action_mailer.delivery_method = :letter_opener_web
+  # 送信処理を実行する設定
+  config.action_mailer.perform_deliveries = true
+
   # Enable/disable Action Controller caching. By default Action Controller caching is disabled.
   # Run rails dev:cache to toggle Action Controller caching.
   if Rails.root.join("tmp/caching-dev.txt").exist?

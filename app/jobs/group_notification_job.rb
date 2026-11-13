@@ -13,8 +13,10 @@ class GroupNotificationJob < ApplicationJob
       # 次回通知日を上書き
       group.update!(next_notify_at: next_notify_at)
 
-      # 最後に投稿促し通知を行う
-      Rails.logger.info("[通知] group_id=#{group.id} name=#{group.name}")
+      # 最後に、メンバー全員へ近況報告を促すメールを送る
+      group.users.each do |user|
+        NotificationMailer.with(user: user, group: group).report_reminder.deliver_later
+      end
     end
   end
 end

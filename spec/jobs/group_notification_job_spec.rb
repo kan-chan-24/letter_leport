@@ -19,21 +19,44 @@ RSpec.describe GroupNotificationJob, type: :job do
     end
   end
 
-  it "通知日時を過ぎたグループは、前回の通知日時の1週間後に更新される" do
-    described_class.perform_now
-    expect(past_group.reload.next_notify_at).to eq Time.zone.local(2026, 11, 16, 9, 0)
+  # 各グループにメンバーを追加する（人数をわざと変えておく）
+  before do
+    create_list(:user, 2).each { |user| past_group.add_member(user) }
+    create_list(:user, 3).each { |user| future_group.add_member(user) }
   end
 
-  it "まだ通知日時が来ていないグループは変更されない" do
-    expect { described_class.perform_now }
-      .not_to change { future_group.reload.next_notify_at }
+  describe "次回通知日時の更新" do
+    it "通知日時を過ぎたグループは、前回の通知日時の1週間後に更新される" do
+      described_class.perform_now
+      expect(past_group.reload.next_notify_at).to eq Time.zone.local(2026, 11, 16, 9, 0)
+    end
+
+    it "まだ通知日時が来ていないグループは変更されない" do
+      expect { described_class.perform_now }
+        .not_to change { future_group.reload.next_notify_at }
+    end
+
+    it "続けて2回実行しても、2回目は更新されない" do
+      described_class.perform_now
+      first_result = past_group.reload.next_notify_at
+
+      described_class.perform_now
+      expect(past_group.reload.next_notify_at).to eq first_result
+    end
   end
 
-  it "続けて2回実行しても、2回目は更新されない" do
-    described_class.perform_now
-    first_result = past_group.reload.next_notify_at
+  describe "通知メールの送信" do
+    it "通知日時を過ぎたグループのメンバー全員分だけ、メールを予約する" do
+      expect { described_class.perform_now }
+        .to have_enqueued_mail(NotificationMailer, :report_reminder)
+        .exactly(past_group.users.count).times
+    end
 
-    described_class.perform_now
-    expect(past_group.reload.next_notify_at).to eq first_result
+    it "続けて2回実行しても、2回目はメールを予約しない" do
+      described_class.perform_now
+
+      expect { described_class.perform_now }
+        .not_to have_enqueued_mail(NotificationMailer, :report_reminder)
+    end
   end
 end

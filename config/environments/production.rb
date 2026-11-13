@@ -56,6 +56,11 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
+  # 本番環境でのメール送信をresendに任せる設定
+  config.action_mailer.delivery_method = :resend
+  # メール内のTL遷移リンクのドメイン設定
+  config.action_mailer.default_url_options = { host: ENV["APP_HOST"], protocol: "https" }
+
   # Set host to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "example.com" }
 

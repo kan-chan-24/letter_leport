@@ -1,4 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  # 受信箱でふしメモと表示される
+  default from: "ふしメモ <notice@fushimemo.com>"
   layout "mailer"
 end

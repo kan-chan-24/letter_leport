@@ -7,6 +7,8 @@ class Group < ApplicationRecord
 
   # 新規グループ作成直後に「期間の作成」が実行される
   after_create :create_first_period
+  # 通知頻度が変わったときだけ、今の期間の終了日時を新しい次回通知日時に合わせる
+  after_update :sync_current_period_end, if: :frequency_saved_change?
 
   enum :interval_unit, { week: 0, month: 1 }
 
@@ -103,5 +105,16 @@ class Group < ApplicationRecord
     # 期間開始時カラムに作成日時、期間終了日カラムに次回通知日時を入れる
     # これで期間開始時〜次回の通知日までを初回の投稿期間とする
     timeline_periods.create!(started_at: created_at, ended_at: next_notify_at)
+  end
+
+  # 直前の保存で、通知頻度（単位か回数）が変わったか
+  def frequency_saved_change?
+    # 週1→月1：単位が変化、月1→半年1回：回数が変化。どちらでもtrueを返す
+    saved_change_to_interval_unit? || saved_change_to_interval_count?
+  end
+
+  def sync_current_period_end
+    # 現在の期間の終了日時を、頻度更新後の次回通知日時とする
+    current_period&.update!(ended_at: next_notify_at)
   end
 end

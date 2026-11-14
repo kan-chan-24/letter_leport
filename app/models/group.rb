@@ -1,8 +1,14 @@
 class Group < ApplicationRecord
   has_many :group_members, dependent: :destroy
   has_many :users, through: :group_members
+  has_many :timeline_periods, dependent: :destroy
 
   has_secure_token :invite_token, on: :initialize
+
+  # 新規グループ作成直後に「期間の作成」が実行される
+  after_create :create_first_period
+  # 通知頻度が変わったときだけ、今の期間の終了日時を新しい次回通知日時に合わせる
+  after_update :sync_current_period_end, if: :frequency_saved_change?
 
   enum :interval_unit, { week: 0, month: 1 }
 
@@ -63,6 +69,12 @@ class Group < ApplicationRecord
     group_members.host.exists?(user: user)
   end
 
+  # 現在の期間を取得するメソッド
+  def current_period
+    # 開始日時が新しい順に並べて、先頭の1件を取得する（idも降順にすることで同値でも並び替えが正常に行くようにしてる）
+    timeline_periods.order(started_at: :desc, id: :desc).first
+  end
+
   private
 
   def max_interval_count
@@ -87,5 +99,22 @@ class Group < ApplicationRecord
       notify_day_of_month: notify_day_of_month,
       notify_hour: notify_hour
     )
+  end
+
+  def create_first_period
+    # 期間開始時カラムに作成日時、期間終了日カラムに次回通知日時を入れる
+    # これで期間開始時〜次回の通知日までを初回の投稿期間とする
+    timeline_periods.create!(started_at: created_at, ended_at: next_notify_at)
+  end
+
+  # 直前の保存で、通知頻度（単位か回数）が変わったか
+  def frequency_saved_change?
+    # 週1→月1：単位が変化、月1→半年1回：回数が変化。どちらでもtrueを返す
+    saved_change_to_interval_unit? || saved_change_to_interval_count?
+  end
+
+  def sync_current_period_end
+    # 現在の期間の終了日時を、頻度更新後の次回通知日時とする
+    current_period&.update!(ended_at: next_notify_at)
   end
 end

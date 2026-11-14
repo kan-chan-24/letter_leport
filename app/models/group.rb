@@ -1,6 +1,7 @@
 class Group < ApplicationRecord
   has_many :group_members, dependent: :destroy
   has_many :users, through: :group_members
+  has_many :timeline_periods, dependent: :destroy
 
   has_secure_token :invite_token, on: :initialize
 
@@ -61,6 +62,12 @@ class Group < ApplicationRecord
   # ユーザーがホストかメンバーか判断する
   def host?(user)
     group_members.host.exists?(user: user)
+  end
+
+  # 現在の期間を取得するメソッド
+  def current_period
+    # 開始日時が新しい順に並べて、先頭の1件を取得する（idも降順にすることで同値でも並び替えが正常に行くようにしてる）
+    timeline_periods.order(started_at: :desc, id: :desc).first
   end
 
   private

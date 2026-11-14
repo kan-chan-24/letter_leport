@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_24_143615) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_14_140344) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,7 +20,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_143615) do
     t.integer "role", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    # 複合indexのユニーク制約で二重登録を防ぐ
     t.index ["group_id", "user_id"], name: "index_group_members_on_group_id_and_user_id", unique: true
     t.index ["group_id"], name: "index_group_members_on_group_id"
     t.index ["user_id"], name: "index_group_members_on_user_id"
@@ -210,6 +209,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_143615) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "timeline_periods", force: :cascade do |t|
+    t.bigint "group_id", null: false
+    t.datetime "started_at", null: false
+    t.datetime "ended_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "started_at"], name: "index_timeline_periods_on_group_id_and_started_at"
+    t.index ["group_id"], name: "index_timeline_periods_on_group_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", default: "", null: false
@@ -233,4 +242,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_24_143615) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "timeline_periods", "groups"
 end

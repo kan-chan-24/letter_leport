@@ -9,6 +9,11 @@ RSpec.describe GroupNotificationJob, type: :job do
   let!(:past_group) do
     create(:group, frequency: "one_week").tap do |group|
       group.update_column(:next_notify_at, Time.zone.local(2026, 11, 9, 9, 0))
+      # 最初の期間も「1週間前に始まり、今回の通知日時（9:00）に終わる」形にそろえる
+      group.current_period.update_columns(
+        started_at: Time.zone.local(2026, 11, 2, 9, 0),
+        ended_at: Time.zone.local(2026, 11, 9, 9, 0)
+      )
     end
   end
 
@@ -42,6 +47,33 @@ RSpec.describe GroupNotificationJob, type: :job do
 
       described_class.perform_now
       expect(past_group.reload.next_notify_at).to eq first_result
+    end
+  end
+
+  describe "期間の作成" do
+    it "通知日時を過ぎたグループは、期間が1件増える" do
+      expect { described_class.perform_now }
+        .to change { past_group.timeline_periods.count }.by(1)
+    end
+
+    it "新しい期間は、開始が今回の通知日時・終了が次回通知日時になる" do
+      described_class.perform_now
+      period = past_group.current_period
+
+      expect(period.started_at).to eq Time.zone.local(2026, 11, 9, 9, 0)
+      expect(period.ended_at).to eq Time.zone.local(2026, 11, 16, 9, 0)
+    end
+
+    it "まだ通知日時が来ていないグループは、期間が増えない" do
+      expect { described_class.perform_now }
+        .not_to change { future_group.timeline_periods.count }
+    end
+
+    it "続けて2回実行しても、期間は1件しか増えない" do
+      expect {
+        described_class.perform_now
+        described_class.perform_now
+      }.to change { past_group.timeline_periods.count }.by(1)
     end
   end
 

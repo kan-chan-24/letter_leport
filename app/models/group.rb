@@ -5,6 +5,9 @@ class Group < ApplicationRecord
 
   has_secure_token :invite_token, on: :initialize
 
+  # 新規グループ作成直後に「期間の作成」が実行される
+  after_create :create_first_period
+
   enum :interval_unit, { week: 0, month: 1 }
 
   # DBには保存しない「仮想属性」。フォームから届く通知頻度を受け取るためのもの
@@ -94,5 +97,11 @@ class Group < ApplicationRecord
       notify_day_of_month: notify_day_of_month,
       notify_hour: notify_hour
     )
+  end
+
+  def create_first_period
+    # 期間開始時カラムに作成日時、期間終了日カラムに次回通知日時を入れる
+    # これで期間開始時〜次回の通知日までを初回の投稿期間とする
+    timeline_periods.create!(started_at: created_at, ended_at: next_notify_at)
   end
 end

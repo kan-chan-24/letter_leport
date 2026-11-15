@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_14_140344) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_15_214626) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -37,6 +37,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_140344) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invite_token"], name: "index_groups_on_invite_token", unique: true
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "group_id", null: false
+    t.bigint "timeline_period_id", null: false
+    t.integer "physical_condition", null: false
+    t.integer "daily_condition", null: false
+    t.integer "fun_condition", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_posts_on_group_id"
+    t.index ["timeline_period_id"], name: "index_posts_on_timeline_period_id"
+    t.index ["user_id", "timeline_period_id"], name: "index_posts_on_user_id_and_timeline_period_id", unique: true
+    t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -234,6 +250,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_14_140344) do
 
   add_foreign_key "group_members", "groups"
   add_foreign_key "group_members", "users"
+  add_foreign_key "posts", "groups"
+  add_foreign_key "posts", "timeline_periods"
+  add_foreign_key "posts", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

@@ -2,6 +2,7 @@ class Group < ApplicationRecord
   has_many :group_members, dependent: :destroy
   has_many :users, through: :group_members
   has_many :timeline_periods, dependent: :destroy
+  has_many :posts, dependent: :destroy
 
   has_secure_token :invite_token, on: :initialize
 

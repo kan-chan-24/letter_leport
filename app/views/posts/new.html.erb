@@ -3,7 +3,6 @@
   <p class="text-base-content/60 mt-2">今の調子を、タップでえらんで知らせましょう。</p>
 
   <%= form_with model: [@group, @post], class: "mt-8 space-y-10" do |f| %>
-
     <% if @post.errors.any? %>
       <div role="alert" class="alert alert-error">
         <ul class="list-disc list-inside">
@@ -14,7 +13,7 @@
       </div>
     <% end %>
 
-    <%# ── 身の回りの調子 ── %>
+    <%# -- 身の回りの調子 -- %>
     <section>
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">
@@ -25,6 +24,7 @@
         <span class="text-xs text-base-content/50">タップで選択</span>
       </div>
 
+      <%# -- 調子の五段階選択 -- %>
       <div class="space-y-4">
         <% Post::CONDITION_ITEMS.each do |item| %>
           <fieldset class="rounded-box bg-primary/5 p-4 xl:flex xl:items-center xl:gap-4">
@@ -59,7 +59,7 @@
       </div>
     </section>
 
-    <%# ── 最近のできごと ── %>
+    <%# -- 最近のできごと -- %>
     <section>
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-3">

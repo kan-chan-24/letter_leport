@@ -31,14 +31,12 @@ class PostsController < AuthenticatedController
     @current_period = @group.current_period
 
     # 現在期間が正常に帰ってこなかったり、終わった期間が帰ってきた（ジョブの遅延を考慮）時のガード節
-    if @current_period.nil? || @current_period.ended_at <= Time.current
-      redirect_to group_path(@group), alert: "現在、投稿できる期間がありません"
-    end
+    redirect_to group_path(@group), alert: "現在、投稿できる期間がありません" unless @current_period&.active?
   end
 
   def reject_if_already_posted
     # 現在期間の投稿の中で、ログインユーザーの投稿があるかどうかをチェック
-    if @current_period.posts.exists?(user: current_user)
+    if @current_period.posted_by?(current_user)
       redirect_to group_path(@group), alert: "今の期間はすでに投稿済みです"
     end
   end

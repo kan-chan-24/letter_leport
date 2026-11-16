@@ -37,6 +37,7 @@ class PostsController < ApplicationController
   end
 
   def reject_if_already_posted
+    # 現在期間の投稿の中で、ログインユーザーの投稿があるかどうかをチェック
     if @current_period.posts.exists?(user: current_user)
       redirect_to group_path(@group), alert: "今の期間はすでに投稿済みです"
     end

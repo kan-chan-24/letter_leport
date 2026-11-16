@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   resources :groups, only: [ :new, :create, :show, :edit, :update ] do
     resources :group_members, only: [ :destroy ]
+    resources :posts, only: [ :new, :create ]
   end
 
   # 招待ページ

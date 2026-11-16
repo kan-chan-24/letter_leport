@@ -1,4 +1,4 @@
-class PostsController < ApplicationController
+class PostsController < AuthenticatedController
   before_action :set_group
   before_action :set_current_period
   before_action :reject_if_already_posted

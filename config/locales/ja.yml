@@ -11,3 +11,8 @@ ja:
       group:
         name: グループ名
         frequency: 通知の頻度
+      post:
+        physical_condition: "からだの調子"
+        daily_condition: "日々のこと"
+        fun_condition: "たのしみ"
+        content: "最近のできごと"

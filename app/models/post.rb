@@ -31,4 +31,11 @@ class Post < ApplicationRecord
       options: { 1 => "後まわし 🍂", 2 => "少しだけ 📖", 3 => "ほどほど 🎧", 4 => "充実してる 🎨", 5 => "最高 ✨" }
     }
   ].freeze
+
+  def condition_label(attr)
+    # 3つの調子から指定した項目を探す
+    item = CONDITION_ITEMS.find { |i| i[:attr] == attr }
+    # item[:options][5]のような形で、5つの選択肢から「とても快調🌱」のようなラベルを取り出す
+    item[:options][send(attr)]
+  end
 end

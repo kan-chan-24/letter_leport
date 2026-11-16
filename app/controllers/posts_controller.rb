@@ -22,8 +22,9 @@ class PostsController < AuthenticatedController
   private
 
   def set_group
-    # current_user.groups から探すので、メンバーでないグループは見つからず404になる
-    @group = current_user.groups.find(params[:group_id])
+    # current_user.groups から探すので、メンバーでないグループは見つからずマイページへ返される
+    @group = current_user.groups.find_by(id: params[:group_id])
+    redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
   end
 
   def set_current_period

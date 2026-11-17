@@ -46,4 +46,38 @@ RSpec.describe TimelinePeriod, type: :model do
       expect(period.active?).to be false
     end
   end
+
+  describe "#heading_label" do
+    let(:group) { create(:group) }
+
+    def period_starting(time)
+      build(:timeline_period, group: group, started_at: time, ended_at: time + 7.days)
+    end
+
+    context "週1のとき" do
+      before { group.update!(frequency: "one_week") }
+
+      it "月をまたぐ週は開始日の月で数える" do
+        expect(period_starting(Time.zone.local(2026, 10, 27)).heading_label).to eq "10月4週目"
+      end
+
+      it "29日以降に始まる週は5週目になる" do
+        expect(period_starting(Time.zone.local(2026, 11, 29)).heading_label).to eq "11月5週目"
+      end
+    end
+
+    context "月1のとき" do
+      before { group.update!(frequency: "one_month") }
+
+      it { expect(period_starting(Time.zone.local(2026, 11, 1)).heading_label).to eq "11月" }
+    end
+
+    context "3ヶ月に1回のとき" do
+      before { group.update!(frequency: "three_month") }
+
+      it "年をまたいでも月の範囲で表示する" do
+        expect(period_starting(Time.zone.local(2026, 11, 1)).heading_label).to eq "11月〜1月"
+      end
+    end
+  end
 end

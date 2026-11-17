@@ -1,11 +1,11 @@
 FactoryBot.define do
   factory :post do
-    user { nil }
-    group { nil }
-    timeline_period { nil }
-    physical_condition { 1 }
-    daily_condition { 1 }
-    fun_condition { 1 }
-    content { "MyText" }
+    association :user
+    association :group
+    timeline_period { association :timeline_period, group: group }
+    physical_condition { 3 }
+    daily_condition { 3 }
+    fun_condition { 3 }
+    content { "最近のできごと" }
   end
 end

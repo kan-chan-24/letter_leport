@@ -31,17 +31,75 @@
   <div class="grid gap-6 lg:grid-cols-[1fr_15rem]">
     <%# ----- TL ----- %>
     <section class="order-2 lg:order-1">
-      <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
-      <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
-        <p class="font-semibold">まだ近況は届いていません</p>
-        <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
-      </div>
+      <% if @posts.any? %>
+        <ul class="space-y-4">
+          <% @posts.each do |post| %>
+            <li class="card border border-base-300 bg-base-100">
+              <div class="card-body gap-3 p-5">
+
+                <%# 投稿者と投稿日時 %>
+                <div class="flex items-center gap-3">
+                  <span class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary">
+                    <%= post.user.name.first %>
+                  </span>
+                  <div>
+                    <p class="font-bold leading-tight"><%= post.user.name %></p>
+                    <p class="text-xs text-base-content/50"><%= post.created_at.strftime("%-m月%-d日 %H:%M") %></p>
+                  </div>
+                </div>
+
+                <%# 3項目の調子 %>
+                <div class="grid gap-2 rounded-box bg-primary/5 p-3 sm:grid-cols-3">
+                  <% Post::CONDITION_ITEMS.each do |item| %>
+                    <% value = post[item[:attr]] %>
+                    <div class="rounded-xl bg-base-100 px-4 py-3">
+
+                      <%# 上段：項目名と5つの丸 %>
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs text-base-content/60"><%= item[:title] %></span>
+                        <span class="flex gap-1">
+                          <%# 調子を視覚的に◯で表示（1~5まで繰り返し、選択された数字までは⚫、以降は⚪で表示。3なら⚫⚫⚫⚪⚪になる） %>
+                          <% 1.upto(5) do |i| %>
+                            <span class="h-2 w-2 rounded-full <%= i <= value ? 'bg-primary' : 'bg-base-300' %>"></span>
+                          <% end %>
+                        </span>
+                      </div>
+
+                      <%# 下段：数値とラベル %>
+                      <div class="mt-1 flex items-baseline gap-2">
+                        <span class="text-lg font-bold"><%= value %>/5</span>
+                        <span class="truncate text-xs text-base-content/70"><%= post.condition_label(item[:attr]) %></span>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+
+                <%# 最近のできごと（任意） %>
+                <% if post.content.present? %>
+                  <div class="text-sm leading-relaxed"><%= simple_format(post.content) %></div>
+                <% end %>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
+          <p class="font-semibold">まだ近況は届いていません</p>
+          <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
+        </div>
+      <% end %>
     </section>
 
     <%# ----- サイド情報 ----- %>
     <aside class="order-1 space-y-4 lg:order-2">
       <%# 遷移先は投稿機能の実装後に link_to へ置き換える %>
-      <%= tag.button "近況を書き始める", type: "button", class: "btn btn-primary btn-block", disabled: true %>
+      <% if @can_post %>
+        <%= link_to "近況を書き始める", new_group_post_path(@group), class: "btn btn-primary btn-block" %>
+      <% elsif @current_period&.posted_by?(current_user) %>
+        <p class="rounded-box bg-secondary/10 py-3 text-center text-sm font-bold text-secondary">
+          今回の近況は届けました ✓
+        </p>
+      <% end %>
 
       <div class="card border border-base-300 bg-base-100">
         <div class="card-body items-center p-4 text-center">

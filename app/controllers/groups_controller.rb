@@ -26,6 +26,14 @@ class GroupsController < AuthenticatedController
 
   def show
     # before_actionで@groupはセット済みなので、すでに@groupが使用可能な状態
+    # 現在の期間を取得
+    @current_period = @group.current_period
+
+    # 投稿一覧の取得(現在の期間がnilだった場合は、空の一覧をPost.noneで仮入れしている)
+    @posts = @current_period ? @current_period.posts.includes(:user).order(created_at: :desc) : Post.none
+
+    # 今の期間が有効で、まだ投稿していなければ投稿できる
+    @can_post = @current_period&.active? && !@current_period.posted_by?(current_user)
   end
 
   def edit

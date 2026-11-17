@@ -11,7 +11,7 @@
   <%# ===== 期間の見出し＋参加メンバー ===== %>
   <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
     <%# 期間の切り替え（◀ ▶）は「期間ごとのTL表示」のissueで追加 %>
-    <h2 class="text-lg font-bold">みんなの近況</h2>
+    <h2 class="text-lg font-bold">みんなの<%= @current_period.heading_label %>の近況</h2>
 
     <div class="flex items-center gap-2">
       <span class="text-sm text-base-content/70">参加メンバー</span>

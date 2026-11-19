@@ -61,6 +61,14 @@ class PostsController < AuthenticatedController
     end
   end
 
+  def require_current_period
+    # @postの期間idとグループに紐づく期間idが同じならOK
+    return if @post.timeline_period_id == @group.current_period&.id
+
+    # 同じじゃないなら、現在以外の期間の投稿を参照しようとしている→弾く
+    redirect_to group_path(@group), alert: "過去の近況は編集できません"
+  end
+
   def post_params
     params.require(:post).permit(:physical_condition, :daily_condition, :fun_condition, :content)
   end

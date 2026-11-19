@@ -1,7 +1,9 @@
 class PostsController < AuthenticatedController
   before_action :set_group
+  before_action :set_post, only: %i[edit update]
   before_action :set_current_period
   before_action :reject_if_already_posted
+  before_action :require_current_period, only: %i[edit update]
 
   def new
     @post = Post.new
@@ -19,12 +21,29 @@ class PostsController < AuthenticatedController
     end
   end
 
+  def edit; end
+
+  def update
+    # フォームから受けとった内容で投稿を更新
+    if @post.update(post_params)
+      # グループのTL画面へ戻る
+      redirect_to group_path(@group), notice: "近況を更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_group
     # current_user.groups から探すので、メンバーでないグループは見つからずマイページへ返される
     @group = current_user.groups.find_by(id: params[:group_id])
     redirect_to mypage_path, alert: "このグループにはアクセスできません" unless @group
+  end
+
+  def set_post
+    # ログインユーザーの投稿を取得
+    @post = current_user.posts.find(params[:id])
   end
 
   def set_current_period

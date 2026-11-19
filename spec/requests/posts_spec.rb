@@ -118,4 +118,57 @@ RSpec.describe "Posts", type: :request do
       expect(response.body).not_to include "近況を書き始める"
     end
   end
+
+  describe "GET /groups/:group_id/posts/:id/edit" do
+    before { sign_in user }
+
+    let(:other_user) { create(:user) }
+    let!(:my_post) { create(:post, user: user, group: group, timeline_period: period) }
+
+    it "自分の今期の投稿なら表示できる" do
+      get edit_group_post_path(group, my_post)
+      expect(response).to have_http_status(:ok)
+    end
+
+    it "他人の投稿は404になる" do
+      others_post = create(:post, user: other_user, group: group, timeline_period: period)
+      get edit_group_post_path(group, others_post)
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "過去の期間の投稿はTLへリダイレクトされる" do
+      past_period = create(:timeline_period, group: group, started_at: period.started_at - 7.days, ended_at: period.started_at)
+      past_post = create(:post, user: user, group: group, timeline_period: past_period)
+
+      get edit_group_post_path(group, past_post)
+      expect(response).to redirect_to group_path(group)
+    end
+  end
+
+  describe "PATCH /groups/:group_id/posts/:id" do
+    before { sign_in user }
+
+    let!(:my_post) { create(:post, user: user, group: group, timeline_period: period, content: "変更前") }
+
+    context "入力が正しい場合" do
+      it "投稿が更新され、TLにメッセージが表示される" do
+        patch group_post_path(group, my_post), params: { post: { content: "変更後" } }
+
+        expect(my_post.reload.content).to eq "変更後"
+        expect(response).to redirect_to group_path(group)
+
+        follow_redirect!
+        expect(response.body).to include "近況を更新しました"
+      end
+    end
+
+    context "3項目のどれかが未選択の場合" do
+      it "更新されず、エラーで再表示される" do
+        patch group_post_path(group, my_post), params: { post: { physical_condition: nil } }
+
+        expect(my_post.reload.physical_condition).not_to be_nil
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+  end
 end

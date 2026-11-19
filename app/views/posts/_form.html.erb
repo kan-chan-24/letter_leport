@@ -1,0 +1,78 @@
+<%= form_with model: [group, post], class: "mt-8 space-y-10" do |f| %>
+    <% if post.errors.any? %>
+        <div role="alert" class="alert alert-error">
+        <ul class="list-disc list-inside">
+            <% post.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
+
+    <%# -- 身の回りの調子 -- %>
+    <section>
+        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+            <span class="w-1.5 h-6 rounded-full bg-primary"></span>
+            <h2 class="text-xl font-bold">身の回りの調子</h2>
+            <span class="badge badge-sm border-0 bg-primary/15 text-primary">30秒で完了</span>
+        </div>
+        <span class="text-xs text-base-content/50">タップで選択</span>
+        </div>
+
+        <%# -- 調子の五段階選択 -- %>
+        <div class="space-y-4">
+        <% Post::CONDITION_ITEMS.each do |item| %>
+            <fieldset class="rounded-box bg-primary/5 p-4 xl:flex xl:items-center xl:gap-4">
+            <legend class="sr-only"><%= item[:title] %></legend>
+
+            <div class="flex items-center gap-3 mb-3 xl:mb-0 xl:w-48 xl:shrink-0">
+                <span class="flex items-center justify-center w-10 h-10 rounded-xl bg-base-100 text-xl">
+                <%= item[:icon] %>
+                </span>
+                <div>
+                <p class="font-bold text-lg leading-tight"><%= item[:title] %></p>
+                <p class="text-xs text-base-content/50"><%= item[:sub] %></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-5 gap-2 flex-1">
+                <% item[:options].each do |value, label| %>
+                <label class="cursor-pointer">
+                    <%= f.radio_button item[:attr], value, class: "peer sr-only" %>
+                    <span class="flex flex-col items-center justify-center h-14 rounded-xl bg-primary/10 text-xs transition
+                                hover:bg-primary/20 peer-checked:hover:bg-primary/90
+                                peer-checked:bg-primary peer-checked:text-primary-content peer-checked:font-bold
+                                peer-focus-visible:ring-2 peer-focus-visible:ring-primary">
+                    <span class="opacity-60"><%= value %></span>
+                    <span class="whitespace-nowrap"><%= label %></span>
+                    </span>
+                </label>
+                <% end %>
+            </div>
+            </fieldset>
+        <% end %>
+        </div>
+    </section>
+
+    <%# -- 最近のできごと -- %>
+    <section>
+        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+            <span class="w-1.5 h-6 rounded-full bg-secondary"></span>
+            <%= f.label :content, "最近のできごと", class: "text-xl font-bold" %>
+            <span class="badge badge-sm border-0 bg-base-300 text-base-content/60">任意</span>
+        </div>
+        <span class="text-xs text-base-content/50"><%= Post::CONTENT_MAX_LENGTH %>字まで</span>
+        </div>
+
+        <%= f.text_area :content, rows: 5, maxlength: Post::CONTENT_MAX_LENGTH,
+            placeholder: "一言だけでも大丈夫です（例：暖かくなってきたね、最近作ったごはん、近所の桜のつぼみ など）",
+            class: "textarea w-full rounded-box border-0 bg-primary/5 p-4 focus:outline-primary" %>
+    </section>
+
+    <div class="space-y-3">
+        <%= f.submit post.new_record? ? "近況を届ける" : "更新する", class: "btn btn-primary w-full" %>
+        <%= link_to "TLにもどる", group_path(group), class: "btn btn-ghost w-full" %>
+    </div>
+<% end %>

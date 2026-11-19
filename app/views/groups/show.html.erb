@@ -33,7 +33,7 @@
     <section class="order-2 lg:order-1">
       <% if @posts.any? %>
         <ul class="space-y-4">
-          <%= render @posts %>
+          <%= render @posts, group: @group, current_period: @current_period %>
         </ul>
       <% else %>
         <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">

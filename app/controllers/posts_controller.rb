@@ -2,7 +2,7 @@ class PostsController < AuthenticatedController
   before_action :set_group
   before_action :set_post, only: %i[edit update]
   before_action :set_current_period
-  before_action :reject_if_already_posted
+  before_action :reject_if_already_posted, only: %i[new create]
   before_action :require_current_period, only: %i[edit update]
 
   def new
@@ -21,7 +21,8 @@ class PostsController < AuthenticatedController
     end
   end
 
-  def edit; end
+  def edit
+  end
 
   def update
     # フォームから受けとった内容で投稿を更新
@@ -63,7 +64,7 @@ class PostsController < AuthenticatedController
 
   def require_current_period
     # @postの期間idとグループに紐づく期間idが同じならOK
-    return if @post.timeline_period_id == @group.current_period&.id
+    return if @post.timeline_period_id == @current_period&.id
 
     # 同じじゃないなら、現在以外の期間の投稿を参照しようとしている→弾く
     redirect_to group_path(@group), alert: "過去の近況は編集できません"

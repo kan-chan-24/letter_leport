@@ -3,6 +3,8 @@ class Post < ApplicationRecord
   belongs_to :group
   belongs_to :timeline_period
 
+  hasmany :reactions, depended: destroy
+
   # 3つの調子の入力を必須。入力範囲を1~5の間にする
   validates :physical_condition, :daily_condition, :fun_condition,
             presence: true,

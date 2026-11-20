@@ -1,0 +1,19 @@
+<%# 👍ボタンと数（Turbo Streamでこのdivごと差し替える） %>
+<div id="<%= dom_id(post, :reactions) %>" class="flex flex-wrap gap-2">
+  <% count = reaction_counts[[post.id, "thumbs_up"]] || 0 %>
+  <% mine = my_reactions[[post.id, "thumbs_up"]] %>
+
+  <% if mine %>
+    <%# 押している → 押すと外れる（DELETE） %>
+    <%= button_to group_post_reaction_path(group, post, mine), method: :delete,
+          class: "btn btn-sm rounded-full border-0 bg-secondary/20" do %>
+      👍 <span class="font-bold"><%= count %></span>
+    <% end %>
+  <% else %>
+    <%# 押していない → 押すと付く（POST） %>
+    <%= button_to group_post_reactions_path(group, post), params: { stamp: "thumbs_up" },
+          class: "btn btn-sm rounded-full border-0 bg-base-200" do %>
+      👍 <span><%= count %></span>
+    <% end %>
+  <% end %>
+</div>

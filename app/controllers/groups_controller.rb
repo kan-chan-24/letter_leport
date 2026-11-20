@@ -34,6 +34,10 @@ class GroupsController < AuthenticatedController
 
     # 今の期間が有効で、まだ投稿していなければ投稿できる
     @can_post = @current_period&.active? && !@current_period.posted_by?(current_user)
+
+    # 👍の数（投稿×スタンプごと）と、自分が押したものをまとめて取得（N+1対策）
+    @reaction_counts = Reaction.where(post: @posts).group(:post_id, :stamp).count
+    @my_reactions = current_user.reactions.where(post: @posts).index_by { |r| [ r.post_id, r.stamp ] }
   end
 
   def edit

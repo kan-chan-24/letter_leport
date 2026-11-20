@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :reaction do
-    user { nil }
-    post { nil }
+    association :user
+    association :post
     stamp { :thumbs_up }
   end
 end

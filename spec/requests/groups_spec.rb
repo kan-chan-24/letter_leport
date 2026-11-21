@@ -5,6 +5,14 @@ RSpec.describe "Groups", type: :request do
 
   before { sign_in user }
 
+  describe "GET /groups/new" do
+    it "グループ作成画面を開ける" do
+      get new_group_path
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe "POST /groups" do
     context "正しい値のとき" do
       let(:params) { { group: { name: "家族", frequency: "six_month" } } }

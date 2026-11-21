@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_15_214626) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_125237) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_214626) do
     t.index ["timeline_period_id"], name: "index_posts_on_timeline_period_id"
     t.index ["user_id", "timeline_period_id"], name: "index_posts_on_user_id_and_timeline_period_id", unique: true
     t.index ["user_id"], name: "index_posts_on_user_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.integer "stamp", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_reactions_on_post_id"
+    t.index ["user_id", "post_id", "stamp"], name: "index_reactions_on_user_id_and_post_id_and_stamp", unique: true
+    t.index ["user_id"], name: "index_reactions_on_user_id"
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -253,6 +264,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_214626) do
   add_foreign_key "posts", "groups"
   add_foreign_key "posts", "timeline_periods"
   add_foreign_key "posts", "users"
+  add_foreign_key "reactions", "posts"
+  add_foreign_key "reactions", "users"
   add_foreign_key "solid_queue_batch_executions", "solid_queue_batches", column: "batch_id", on_delete: :cascade
   add_foreign_key "solid_queue_batch_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

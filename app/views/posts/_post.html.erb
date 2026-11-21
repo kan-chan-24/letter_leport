@@ -51,5 +51,11 @@
     <% if post.content.present? %>
       <div class="text-sm leading-relaxed"><%= simple_format(post.content) %></div>
     <% end %>
+
+    <%# リアクション（TL画面のみ。個人ページではreaction_countsを渡さないので表示しない） %>
+    <% if local_assigns[:reaction_counts] %>
+      <%= render "reactions/reactions", group: group, post: post,
+          reaction_counts: reaction_counts, my_reactions: my_reactions %>
+    <% end %>
   </div>
 </li>

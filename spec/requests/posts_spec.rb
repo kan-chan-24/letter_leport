@@ -171,4 +171,52 @@ RSpec.describe "Posts", type: :request do
       end
     end
   end
+
+  describe "DELETE /groups/:group_id/posts/:id" do
+    let(:other_user) { create(:user) }
+    let!(:my_post) { create(:post, user: user, group: group, timeline_period: period) }
+
+    context "未ログインの場合" do
+      it "削除されず、ログイン画面へリダイレクトされる" do
+        expect {
+          delete group_post_path(group, my_post)
+        }.not_to change(Post, :count)
+
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
+    context "ログイン済みの場合" do
+      before { sign_in user }
+
+      it "自分の投稿が削除され、TLにメッセージが表示される" do
+        expect {
+          delete group_post_path(group, my_post)
+        }.to change(Post, :count).by(-1)
+
+        expect(response).to redirect_to group_path(group)
+
+        follow_redirect!
+        expect(response.body).to include "近況を削除しました"
+      end
+
+      it "他人の投稿は404になり、削除されない" do
+        others_post = create(:post, user: other_user, group: group, timeline_period: period)
+
+        expect {
+          delete group_post_path(group, others_post)
+        }.not_to change(Post, :count)
+
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it "削除後、同じ期間にもう一度投稿できる" do
+        delete group_post_path(group, my_post)
+
+        expect {
+          post group_posts_path(group), params: valid_params
+        }.to change(Post, :count).by(1)
+      end
+    end
+  end
 end

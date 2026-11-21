@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :groups, only: [ :new, :create, :show, :edit, :update ] do
     resources :group_members, only: [ :destroy ]
-    resources :posts, only: [ :new, :create, :edit, :update ] do
+    resources :posts, only: [ :new, :create, :edit, :update, :destroy ] do
       resources :reactions, only: [ :create, :destroy ]
     end
   end

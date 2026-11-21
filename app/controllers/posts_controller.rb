@@ -39,7 +39,7 @@ class PostsController < AuthenticatedController
     @post.destroy
     redirect_to group_path(@group), notice: "近況を削除しました", status: :see_other
   end
-  
+
   private
 
   def set_group

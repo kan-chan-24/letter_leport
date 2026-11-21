@@ -1,6 +1,6 @@
 class PostsController < AuthenticatedController
   before_action :set_group
-  before_action :set_post, only: %i[edit update]
+  before_action :set_post, only: %i[edit update destroy]
   before_action :set_current_period
   before_action :reject_if_already_posted, only: %i[new create]
   before_action :require_current_period, only: %i[edit update]
@@ -32,6 +32,12 @@ class PostsController < AuthenticatedController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    # before_action set_postでログインユーザーの投稿は前もって取得済み
+    @post.destroy
+    redirect_to group_path(@group), notice: "近況を削除しました", status: :see_other
   end
 
   private

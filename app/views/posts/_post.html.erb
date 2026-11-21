@@ -16,6 +16,7 @@
           <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">…</div>
           <ul tabindex="0" class="dropdown-content menu bg-base-100 border border-primary/20 rounded-box z-10 w-36 p-2 shadow-lg">
             <li><%= link_to "投稿の編集", edit_group_post_path(group, post) %></li>
+            <li><%= button_to "投稿の削除", group_post_path(group, post), method: :delete, form: { data: { turbo_confirm: "この近況を削除します。よろしいですか？" } }, class: "text-error" %></li>
           </ul>
         </div>
       <% end %>

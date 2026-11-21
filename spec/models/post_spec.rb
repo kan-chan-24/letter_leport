@@ -57,6 +57,15 @@ RSpec.describe Post, type: :model do
     end
   end
 
+    describe "削除時" do
+      it "投稿を削除すると、その投稿についたリアクションも削除される" do
+        post = create(:post)
+        create(:reaction, post: post)
+
+        expect { post.destroy }.to change(Reaction, :count).by(-1)
+      end
+    end
+
   describe "#condition_label" do
     it "値に対応するラベルを返す" do
       post = build(:post, physical_condition: 5)

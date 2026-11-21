@@ -1,6 +1,29 @@
 require "rails_helper"
 
 RSpec.describe Group, type: :model do
+  describe "バリデーション" do
+    it "グループ名と通知頻度があれば有効" do
+      expect(build(:group)).to be_valid
+    end
+
+    it "グループ名が空だと無効" do
+      group = build(:group, name: "")
+
+      expect(group).not_to be_valid
+      expect(group.errors[:name]).to be_present
+    end
+  end
+
+  describe "招待トークン" do
+    it "グループを作ると、招待トークンが自動で入る" do
+      expect(build(:group).invite_token).to be_present
+    end
+
+    it "グループごとに違う招待トークンになる" do
+      expect(create(:group).invite_token).not_to eq create(:group).invite_token
+    end
+  end
+
   describe "作成時の期間" do
     it "グループを作成すると、期間が1件作られる" do
       # 件数が増えたかでチェック

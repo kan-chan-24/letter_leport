@@ -11,7 +11,7 @@
         <p class="font-bold leading-tight"><%= post.user.name %></p>
         <p class="text-xs text-base-content/50"><%= post.created_at.strftime("%-m月%-d日 %H:%M") %></p>
       </div>
-      <% if post.user_id == current_user.id && post.timeline_period_id == current_period.id %>
+      <% if local_assigns[:current_period] && post.user_id == current_user.id && post.timeline_period_id == current_period.id %>
         <div class="dropdown dropdown-end ml-auto">
           <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">…</div>
           <ul tabindex="0" class="dropdown-content menu bg-base-100 border border-primary/20 rounded-box z-10 w-36 p-2 shadow-lg">

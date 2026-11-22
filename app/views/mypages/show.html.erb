@@ -18,7 +18,7 @@
       <%# 投稿機能が出来次第、 所属がない時 elsif 投稿状況の取得 else 投稿を促す の流れにif構成を変更する %>
       <% if @posts.any? %>
         <ul class="space-y-4">
-          <%= render @posts %>
+          <%= render @posts, show_group: true %>
         </ul>
       <% elsif current_user.group_members.exists? %>
         <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>

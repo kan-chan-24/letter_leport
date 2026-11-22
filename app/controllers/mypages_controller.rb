@@ -7,7 +7,6 @@ class MypagesController < AuthenticatedController
   
   def set_posts
     # ログインユーザーの投稿をまとめて取得する
-    @posts = current_user.posts.includes(:user).order(created_at: :desc)
-    p @posts.to_a
+    @posts = current_user.posts.includes(:user, :group).order(created_at: :desc)
   end
 end

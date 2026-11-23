@@ -7,11 +7,16 @@
       <span class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/15 text-sm font-bold text-primary">
         <%= post.user.name.first %>
       </span>
-      <div>
+      <div class="min-w-0">
         <p class="font-bold leading-tight"><%= post.user.name %></p>
-        <p class="text-xs text-base-content/50"><%= post.created_at.strftime("%-m月%-d日 %H:%M") %></p>
+        <p class="flex items-center gap-2 text-xs text-base-content/50">
+          <span class="shrink-0"><%= post.created_at.strftime("%-m月%-d日 %H:%M") %></span>
+          <% if local_assigns[:show_group] %>
+            <span class="truncate min-w-0"><%= post.group.name %></span>
+          <% end %>
+        </p>
       </div>
-      <% if post.user_id == current_user.id && post.timeline_period_id == current_period.id %>
+      <% if local_assigns[:current_period] && post.user_id == current_user.id && post.timeline_period_id == current_period.id %>
         <div class="dropdown dropdown-end ml-auto">
           <div tabindex="0" role="button" class="btn btn-ghost btn-sm btn-circle">…</div>
           <ul tabindex="0" class="dropdown-content menu bg-base-100 border border-primary/20 rounded-box z-10 w-36 p-2 shadow-lg">

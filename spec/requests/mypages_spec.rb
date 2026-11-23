@@ -24,7 +24,7 @@ RSpec.describe "Mypages", type: :request do
       context "グループに参加していて、投稿がない場合" do
         let(:group) { create(:group) }
         let!(:group_member) { create(:group_member, group: group, user: user) }
-        
+
         it "投稿をしていない案内が表示される" do
           get mypage_path
           expect(response.body).to include "まだ近況は知らせていません"
@@ -43,7 +43,7 @@ RSpec.describe "Mypages", type: :request do
         it "自分の投稿がグループ名つきで表示される" do
           expect(response.body).to include "テストグループ"
         end
-        
+
         it "他人の投稿は表示されない" do
           expect(response.body).not_to include "ほかの人"
         end

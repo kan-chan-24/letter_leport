@@ -23,7 +23,7 @@
       <% elsif current_user.group_members.exists? %>
         <%# 投稿機能の実装後に「if @posts.any? → 投稿カード一覧 / else → 下の空の枠」で切り替える %>
         <div class="flex flex-col items-center justify-center rounded-box border-2 border-dashed border-base-300 px-6 py-16 text-center">
-          <p class="font-semibold">まだ近況は届いていません</p>
+          <p class="font-semibold">まだ近況は知らせていません</p>
           <p class="mt-1 text-sm text-base-content/60">最初の近況を書いてみましょう</p>
         </div>
       <% else %>

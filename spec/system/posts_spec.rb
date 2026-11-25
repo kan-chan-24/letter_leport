@@ -46,4 +46,50 @@ RSpec.describe "近況投稿の流れ", type: :system do
     expect(page).to have_content "桜が満開になりました"
     expect(page).not_to have_content "近所の桜が咲きました"
   end
+
+  describe "👍リアクション", js: true do
+    let(:friend) { create(:user, name: "友だち") }
+    let!(:friend_membership) { create(:group_member, group: group, user: friend) }
+    let!(:friends_post) { create(:post, user: friend, group: group, timeline_period: period, content: "旅行に行ってきました") }
+
+    before do
+      sign_in user          # ログイン画面の操作は④で確認済みなので近道する
+      visit group_path(group)
+    end
+
+    it "押すと1になり、もう一度押すと0に戻る" do
+      expect(page).to have_button "👍 0"
+
+      click_button "👍"
+      expect(page).to have_button "👍 1"   # Turbo Streamでボタンが差し替わった
+
+      click_button "👍"
+      expect(page).to have_button "👍 0"   # 外すと元に戻る
+    end
+  end
+
+  describe "近況の削除", js: true do
+    let!(:my_post) { create(:post, user: user, group: group, timeline_period: period, content: "削除する近況") }
+
+    before do
+      sign_in user
+      visit group_path(group)
+    end
+
+    it "確認ダイアログでOKすると削除され、もう一度投稿できるようになる" do
+      expect(page).to have_content "削除する近況"
+
+      # 「…」を押してメニューを開く（Chromeでは開かないと中のボタンが見えない）
+      find("div[role='button']", text: "…").click
+
+      # 確認ダイアログが出たらOKを押す
+      accept_confirm "この近況を削除します。よろしいですか？" do
+        click_button "投稿の削除"
+      end
+
+      expect(page).to have_content "近況を削除しました"
+      expect(page).not_to have_content "削除する近況"
+      expect(page).to have_link "近況を書き始める"   # 同じ期間にもう一度投稿できる
+    end
+  end
 end

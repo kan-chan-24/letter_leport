@@ -85,3 +85,10 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+group :test do
+  # system spec で画面操作を指示するためのgem
+  gem "capybara"
+  # 本物のブラウザ（Chrome）を動かすためのgem
+  gem "selenium-webdriver"
+end

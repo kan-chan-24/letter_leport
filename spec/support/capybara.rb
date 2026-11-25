@@ -6,7 +6,7 @@ RSpec.configure do |config|
 
   # js: true を付けたテストだけ、headless Chrome で動かす
   config.before(:each, type: :system, js: true) do
-    driven_by :selenium, using: :headless_chrome, screen_size: [1400, 1000] do |options|
+    driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1000 ] do |options|
       # Docker内ではChromeの安全機能（サンドボックス）が動かないので無効にする
       options.add_argument("--no-sandbox")
       # Docker内の共有メモリが小さく、Chromeが落ちることがあるのを防ぐ

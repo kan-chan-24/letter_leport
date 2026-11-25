@@ -170,6 +170,17 @@ RSpec.describe "Posts", type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context "他人の投稿の場合" do
+      it "404になり、更新されない" do
+        others_post = create(:post, user: create(:user), group: group, timeline_period: period, content: "他人の投稿")
+
+        patch group_post_path(group, others_post), params: { post: { content: "書き換え" } }
+
+        expect(response).to have_http_status(:not_found)
+        expect(others_post.reload.content).to eq "他人の投稿"
+      end
+    end
   end
 
   describe "DELETE /groups/:group_id/posts/:id" do
@@ -217,6 +228,33 @@ RSpec.describe "Posts", type: :request do
           post group_posts_path(group), params: valid_params
         }.to change(Post, :count).by(1)
       end
+    end
+  end
+
+  describe "メンバーでないユーザーの場合" do
+    let(:outsider) { create(:user) } # グループに入っていないユーザー
+    let!(:member_post) { create(:post, user: user, group: group, timeline_period: period, content: "メンバーの投稿") }
+
+    before { sign_in outsider }
+
+    it "編集画面を開けず、マイページへリダイレクトされる" do
+      get edit_group_post_path(group, member_post)
+      expect(response).to redirect_to mypage_path
+    end
+
+    it "更新できず、マイページへリダイレクトされる" do
+      patch group_post_path(group, member_post), params: { post: { content: "書き換え" } }
+
+      expect(response).to redirect_to mypage_path
+      expect(member_post.reload.content).to eq "メンバーの投稿"
+    end
+
+    it "削除できず、マイページへリダイレクトされる" do
+      expect {
+        delete group_post_path(group, member_post)
+      }.not_to change(Post, :count)
+
+      expect(response).to redirect_to mypage_path
     end
   end
 end

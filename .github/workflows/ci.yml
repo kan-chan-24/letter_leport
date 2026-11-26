@@ -90,6 +90,15 @@ jobs:
         with:
           bundler-cache: true
 
+      # ↓ 追加：Chrome 158 と Capybara 3.40.0 の相性問題を避けるため、157に固定する
+      #   （Capybaraの修正版が出たら、このステップは外す）
+      - name: Set up Chrome 157
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: 157
+          install-chromedriver: true
+
       - name: Run tests
         env:
           RAILS_ENV: test

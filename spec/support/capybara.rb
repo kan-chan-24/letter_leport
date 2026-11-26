@@ -11,8 +11,16 @@ RSpec.configure do |config|
       options.add_argument("--no-sandbox")
       # Docker内の共有メモリが小さく、Chromeが落ちることがあるのを防ぐ
       options.add_argument("--disable-dev-shm-usage")
-      # Docker内ではChromiumを使う（CIには無いので、あるときだけ指定）
-      options.binary = "/usr/bin/chromium" if File.exist?("/usr/bin/chromium")
+
+      # 使うChromeの場所を決める
+      if ENV["CHROME_BIN"].present?
+        # CI：setup-chromeで入れたChrome 157を使う
+        # （Chrome 158とCapybara 3.40.0の相性問題の回避。Capybaraの修正版が出たら外す）
+        options.binary = ENV["CHROME_BIN"]
+      elsif File.exist?("/usr/bin/chromium")
+        # Docker内：Chromiumを使う
+        options.binary = "/usr/bin/chromium"
+      end
     end
   end
 end

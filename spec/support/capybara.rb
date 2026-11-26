@@ -22,5 +22,5 @@ RSpec.configure do |config|
         options.binary = "/usr/bin/chromium"
       end
     end
-  end  
+  end
 end

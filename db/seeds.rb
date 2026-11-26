@@ -14,7 +14,7 @@ end
 group_settings = [
   { name: "実家のみんな",   host: users[0], members: users[1..3],                  frequency: "one_week",    leave_unposted: true },
   { name: "大学の友だち",   host: users[0], members: users[3..5],                  frequency: "one_month",   leave_unposted: false },
-  { name: "前の職場の同期", host: users[1], members: [users[0], users[4], users[5]], frequency: "three_month", leave_unposted: false }
+  { name: "前の職場の同期", host: users[1], members: [ users[0], users[4], users[5] ], frequency: "three_month", leave_unposted: false }
 ]
 
 contents = [

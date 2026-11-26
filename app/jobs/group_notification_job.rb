@@ -3,7 +3,7 @@ class GroupNotificationJob < ApplicationJob
 
   def perform
     # 通知日時を過ぎたグループだけ取得
-    Group.where(next_notify_at: ..Time.current).find_each do |group|
+    Group.includes(:users).where(next_notify_at: ..Time.current).find_each do |group|
       # 今回の通知日時（＝新しい期間の開始日時）を、上書きする前に取っておく
       notified_at = group.next_notify_at
 
